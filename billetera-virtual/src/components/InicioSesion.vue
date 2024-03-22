@@ -15,7 +15,15 @@
   </body>
 </template>
 
-<script></script>
+<script>
+export default {
+  data() {
+    return {
+      user: "s",
+    };
+  },
+};
+</script>
 
 <style scoped>
 body {
