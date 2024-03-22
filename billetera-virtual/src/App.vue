@@ -13,15 +13,23 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-image: url("components/Imagenes/FondoInicioSesion.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 nav {
   padding: 30px;
+  display: flex;
+  justify-content: right;
+  position: relative;
 }
 
 nav a {
   font-weight: bold;
   color: #2c3e50;
+  padding-right: 3px;
+  padding-left: 3px;
 }
 
 nav a.router-link-exact-active {

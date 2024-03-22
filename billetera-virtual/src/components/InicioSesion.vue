@@ -15,45 +15,7 @@
   </body>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      idUsuarios: [],
-      idUsuario: "",
-    };
-  },
-  mounted() {
-    if (localStorage.getItem("idUsuarios")) {
-      try {
-        this.idUsuarios = JSON.parse(localStorage.getItem("idUsuarios"));
-      } catch (e) {
-        localStorage.removeItem("idUsuarios");
-      }
-    }
-  },
-  methods: {
-    agregarUsuario() {
-      if (!this.idUsuario) {
-        alert("Ingrese id");
-      } else {
-        if (this.idUsuarios.includes(this.idUsuario)) {
-          this.cargarUsuarios();
-          this.$router.push({ name: "cripto" });
-        } else {
-          this.idUsuarios.push(this.idUsuario);
-          this.cargarUsuarios();
-          this.$router.push({ name: "cripto" });
-        }
-      }
-    },
-    cargarUsuarios() {
-      var parsed = JSON.stringify(this.idUsuarios);
-      localStorage.setItem("idUsuarios", parsed);
-    },
-  },
-};
-</script>
+<script></script>
 
 <style scoped>
 body {
