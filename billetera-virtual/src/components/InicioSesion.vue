@@ -8,7 +8,7 @@
             <img src="@\components\Imagenes\Usuario-removebg-preview.png" />
           </div>
           <input v-model.trim="idUsuario" id="id" />
-          <button v-on:click="agregarUsuario">Ingresar</button>
+          <button v-on:click="controlDeInicio">Ingresar</button>
         </div>
       </div>
     </div>
@@ -16,11 +16,19 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      user: "s",
+      idUsuario: "",
     };
+  },
+  methods: {
+    ...mapActions(["inicio"]),
+    controlDeInicio() {
+      this.inicio();
+      this.$router.push("/about");
+    },
   },
 };
 </script>
