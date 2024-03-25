@@ -26,8 +26,12 @@ export default {
   methods: {
     ...mapActions(["inicio"]),
     controlDeInicio() {
-      this.inicio();
-      this.$router.push("/about");
+      if (this.idUsuario !== "") {
+        this.inicio();
+        this.$router.push("/about");
+      } else {
+        alert("Usuario no valido");
+      }
     },
   },
 };

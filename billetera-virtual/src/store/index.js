@@ -7,7 +7,7 @@ export default createStore({
   getters: {},
   mutations: {
     EstablecerAutenticado(state, value) {
-      state.isAuthenticated = value;
+      state.usuarioAutenticado = value;
     },
   },
   actions: {
