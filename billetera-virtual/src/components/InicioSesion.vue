@@ -27,7 +27,7 @@ export default {
     ...mapActions(["inicio"]),
     controlDeInicio() {
       if (this.idUsuario !== "") {
-        this.inicio();
+        this.inicio(this.idUsuario);
         this.$router.push("/about");
       } else {
         alert("Usuario no valido");
