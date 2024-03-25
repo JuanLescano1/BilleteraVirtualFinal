@@ -14,14 +14,15 @@ export default createStore({
     EstablecerAutenticado(state, value) {
       state.usuarioAutenticado = value;
     },
-    agregarUsuario (state, {id, datos }) {
-      state.usuarios = datos;
+    agregarUsuario(state, { id, datos }) {
+      state.usuarios[id] = datos;
     },
   },
   actions: {
-    inicio({ commit }) {
+    inicio({ commit }, idUsuario) {
       commit("EstablecerAutenticado", true);
       commit("AgregarUsuario", { id: idUsuario, datos: {} });
+      localStorage.setItem("idUsuario", idUsuario);
     },
     cierre({ commit }) {
       commit("EstablecerAutenticado", false);
