@@ -1,11 +1,36 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/" v-if="!this.usuarioAutenticado"
+      >Iniciar sesion</router-link
+    >
+    <router-link v-if="!this.usuarioAutenticado" to="/about">About</router-link>
+    <button
+      v-on:click="CierreSesion"
+      id="btnCerrarSesion"
+      v-if="this.usuarioAutenticado"
+    >
+      Cerrar sesion
+    </button>
   </nav>
   <router-view />
 </template>
-
+<script>
+import { mapActions } from "vuex";
+export default {
+  data() {
+    return {
+      idUsuario: "",
+    };
+  },
+  methods: {
+    ...mapActions(["cierre"]),
+    CierreSesion() {
+      this.cierre();
+      this.$router.push("/");
+    },
+  },
+};
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -33,6 +58,14 @@ nav a {
 }
 
 nav a.router-link-exact-active {
+  color: #42b983;
+}
+#btnCerrarSesion {
+  display: flex;
+  justify-content: right;
+  position: relative;
+  background-color: transparent;
+  border-color: transparent;
   color: #42b983;
 }
 </style>

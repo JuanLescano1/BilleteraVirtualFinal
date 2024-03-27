@@ -22,7 +22,13 @@ export default createStore({
     inicio({ commit }, idUsuario) {
       commit("EstablecerAutenticado", true);
       commit("AgregarUsuario", { id: idUsuario, datos: {} });
-      localStorage.setItem("idUsuario", idUsuario);
+      let idsGuardados = JSON.parse(
+        localStorage.getItem("idsUsuarios") || "[]"
+      );
+      if (!idsGuardados.includes(idUsuario)) {
+        idsGuardados.push(idUsuario);
+      }
+      localStorage.setItem("idsUsuarios", JSON.stringify(idsGuardados));
     },
     cierre({ commit }) {
       commit("EstablecerAutenticado", false);
