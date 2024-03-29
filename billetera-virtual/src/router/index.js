@@ -21,6 +21,11 @@ const routes = [
     name: "usuario",
     component: () => import("../views/VistaUsuario.vue"),
   },
+  {
+    path: "/crypto",
+    name: "crypto",
+    component: () => import("../views/CryptosView.vue"),
+  },
 ];
 
 const router = createRouter({
