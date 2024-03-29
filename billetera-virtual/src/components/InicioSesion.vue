@@ -37,8 +37,8 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  position: absolute; /* Esto posicionará la imagen por encima de otros elementos */
-  z-index: -1; /* Esto asegura que la imagen esté detrás de otros elementos */
+  position: absolute;
+  z-index: -1;
   top: 0;
   left: 0;
 }
@@ -56,9 +56,9 @@ export default {
   min-height: 300px;
   align-items: center;
   justify-content: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   max-width: 300px;
+  background-image: url("/src/components/Imagenes/FondoInicioSesion.jpg");
+  background-size: cover;
 }
 
 #ingresoDeUsuario h2 {
