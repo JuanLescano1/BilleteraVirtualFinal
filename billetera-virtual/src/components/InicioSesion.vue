@@ -1,18 +1,13 @@
 <template>
-  <body>
-    <div id="app">
-      <div id="body">
-        <div id="ingresoDeUsuario">
-          <h2>Ingrese su ID</h2>
-          <div id="imagen">
-            <img src="@\components\Imagenes\Usuario-removebg-preview.png" />
-          </div>
-          <input v-model.trim="idUsuario" id="id" />
-          <button v-on:click="controlDeInicio">Ingresar</button>
-        </div>
-      </div>
+  <img src="@\components\Imagenes\FondoInicioSesion.jpg" id="fondo" />
+  <div id="ingresoDeUsuario">
+    <h2>Ingrese su ID</h2>
+    <div id="imagen">
+      <img src="@\components\Imagenes\Usuario-removebg-preview.png" />
     </div>
-  </body>
+    <input v-model.trim="idUsuario" id="id" />
+    <button v-on:click="controlDeInicio">Ingresar</button>
+  </div>
 </template>
 
 <script>
@@ -38,19 +33,20 @@ export default {
 </script>
 
 <style scoped>
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 91.8vh;
-  background-repeat: no-repeat;
-  margin: 0px;
-  border-radius: 10px;
-}
-#app {
-  border-radius: 10px;
+#fondo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute; /* Esto posicionará la imagen por encima de otros elementos */
+  z-index: -1; /* Esto asegura que la imagen esté detrás de otros elementos */
+  top: 0;
+  left: 0;
 }
 #ingresoDeUsuario {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   border-style: groove;
@@ -64,6 +60,7 @@ body {
   background-size: cover;
   max-width: 300px;
 }
+
 #ingresoDeUsuario h2 {
   position: relative;
   margin: 0px;

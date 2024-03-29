@@ -1,5 +1,6 @@
 <template>
   <div class="about">
+    <img src="@\components\Imagenes\FondoInicioSesion.jpg" />
     <h1>Billetera virtual</h1>
     <div id="info">
       <p>

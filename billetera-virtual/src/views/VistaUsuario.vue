@@ -1,6 +1,10 @@
 <template>
-  <div>
-    <h1>{{ idUsuarioAutenticado }}</h1>
+  <div id="background">
+    <div id="background">
+      <div id="sd">
+        <h1>{{ idUsuarioAutenticado }}</h1>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -14,4 +18,13 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+#background {
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+#sd {
+  display: flex;
+  width: 100%;
+}
+</style>
