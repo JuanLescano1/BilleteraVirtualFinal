@@ -28,7 +28,7 @@ export default {
     controlDeInicio() {
       if (this.idUsuario !== "") {
         this.inicio(this.idUsuario);
-        this.$router.push("/about");
+        this.$router.push("/usuario");
       } else {
         alert("Usuario no valido");
       }
