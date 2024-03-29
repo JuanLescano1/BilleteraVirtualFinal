@@ -1,4 +1,5 @@
 <template>
+  <img src="@\components\Imagenes\FondoInicioSesion.jpg" id="fondo" />
   <div class="about">
     <h1>Billetera virtual</h1>
     <div id="info">
@@ -28,6 +29,18 @@
 </template>
 
 <style>
+body {
+  margin: 0px;
+}
+#fondo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+}
 h1 {
   color: gold;
 }
