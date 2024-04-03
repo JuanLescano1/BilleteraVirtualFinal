@@ -1,20 +1,12 @@
 <template>
-  <div>
-    <ul>
-      <li v-for="crypto in cryptos" :key="crypto.id">
-        {{ crypto }}
-      </li>
-    </ul>
-  </div>
+  <div></div>
 </template>
 <script>
-import axios from "axios";
 export default {
   data() {
     return {
-      exchanges: [],
-      Cryptos: [],
-      listaCryptos: [
+      exchanges: {},
+      monedas: [
         "btc",
         "eth",
         "usdt",
@@ -53,6 +45,7 @@ export default {
       ],
     };
   },
+  methods: {},
 };
 </script>
 <style></style>
