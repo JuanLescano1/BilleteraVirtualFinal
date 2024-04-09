@@ -4,9 +4,9 @@ const api = axios.create({
   baseURL: "https://criptoya.com/api",
 });
 export default {
-  async Bitso(moneda) {
+  async Bitso(moneda, fiat) {
     try {
-      const url = `/bitsoalpha/${moneda}/ars}`;
+      const url = `/bitsoalpha/${moneda}/${fiat}`;
       const response = await api.get(url);
       return response.data;
     } catch (error) {
@@ -14,9 +14,9 @@ export default {
       throw error;
     }
   },
-  async Cryptomkt(moneda) {
+  async Cryptomkt(moneda, fiat) {
     try {
-      const url = `/cryptomkt/${moneda}/ars}`;
+      const url = `/cryptomkt/${moneda}/${fiat}`;
       const response = await api.get(url);
       return response.data;
     } catch (error) {
@@ -26,7 +26,7 @@ export default {
   },
   async Argen(moneda) {
     try {
-      const url = `/argenbtc/${moneda}/ars}`;
+      const url = `/argenbtc/${moneda}/ars`;
       const response = await api.get(url);
       return response.data;
     } catch (error) {

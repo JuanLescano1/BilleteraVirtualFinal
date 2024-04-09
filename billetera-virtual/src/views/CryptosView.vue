@@ -3,14 +3,13 @@
     <h1>Monedas del {{ exchanges1 }}</h1>
     <ul>
       <li v-for="moneda in monedasBitso" :key="moneda">
-        {{ moneda }} - Ask {{ exchangeRates[`Bitso_${moneda}`]?.ask }}
+        {{ moneda }} - Ask: {{ exchangeRates[`Bitso_${moneda}`]?.totalAsk }}
       </li>
     </ul>
   </div>
 </template>
 <script>
 import eventService from "@/services/EventService.js";
-
 export default {
   data() {
     return {
@@ -64,27 +63,13 @@ export default {
         "xrp",
       ],
       exchangeRates: {},
+      fiatBitso: ["COP", "ARS", "MXN", "BRL"],
+      fiatCryptomkt: ["PEN", "CLP", "ARS", "COP", "BRL"],
+      fiatMapping: {
+        ada: "ars",
+        bat: "btc",
+      },
     };
-  },
-  methods: {
-    llamadoApi() {
-      this.exchangeRates = {};
-      for (let moneda of this.monedasBitso) {
-        eventService.Bitso(moneda).then((response) => {
-          this.exchangeRates[`Bitso_${moneda}`] = response.data;
-        });
-      }
-      for (let moneda of this.monedasArgen) {
-        eventService.Argen(moneda).then((response) => {
-          this.exchangeRates[`Argen_${moneda}`] = response.data;
-        });
-      }
-      for (let moneda of this.monedasCryptomkt) {
-        eventService.Cryptomkt(moneda).then((response) => {
-          this.exchangeRates[`Cryptomkt_${moneda}`] = response.data;
-        });
-      }
-    },
   },
 };
 </script>
