@@ -1,11 +1,17 @@
 <template>
   <div>
-    <h1>Monedas del {{ exchanges1 }}</h1>
-    <ul>
-      <li v-for="moneda in monedasBitso" :key="moneda">
-        {{ moneda }} - Ask: {{ exchangeRates[`Bitso_${moneda}`]?.totalAsk }}
-      </li>
-    </ul>
+    <h1>Monedas del</h1>
+    <div v-if="adaData && nupenData && avaxData">
+      <h2>s</h2>
+      <ul>
+        <li>{{ adaData }}</li>
+      </ul>
+      <ul>
+        <li v-for="(data, moneda) in argentBTCData" :key="moneda">
+          {{ moneda }}: {{ data }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 <script>
@@ -13,63 +19,54 @@ import eventService from "@/services/EventService.js";
 export default {
   data() {
     return {
-      exchanges1: "bitsoalpha",
-      exchanges2: "cryptomkt",
-      exchanges3: "argenbtc",
-      monedasBitso: [
-        "ada",
-        "bat",
-        "bch",
-        "btc",
-        "dai",
-        "doge",
-        "dot",
-        "eth",
-        "link",
-        "ltc",
-        "mana",
-        "matic",
-        "shib",
-        "sol",
-        "trx",
-        "usdc",
-        "usdt",
-        "xrp",
-      ],
-      monedasArgen: ["btc", "dai", "eth", "usdt"],
-      monedasCryptomkt: [
-        "aave",
-        "ada",
-        "algo",
-        "avax",
-        "bch",
-        "bnb",
-        "btc",
-        "dai",
-        "dot",
-        "eos",
-        "eth",
-        "link",
-        "ltc",
-        "matic",
-        "paxg",
-        "shib",
-        "sol",
-        "trx",
-        "uni",
-        "usdc",
-        "usdt",
-        "xlm",
-        "xrp",
-      ],
-      exchangeRates: {},
-      fiatBitso: ["COP", "ARS", "MXN", "BRL"],
-      fiatCryptomkt: ["PEN", "CLP", "ARS", "COP", "BRL"],
-      fiatMapping: {
-        ada: "ars",
-        bat: "btc",
+      nupenData: null,
+      adaData: null,
+      avaxData: null,
+      listaArgentBTC: ["BTC", "DAI", "ETH", "USDT"],
+      argentBTCData: {
+        BTC: null,
+        DAI: null,
+        ETH: null,
+        USDT: null,
       },
     };
+  },
+  created() {
+    eventService
+      .argenNupen()
+      .then((response) => {
+        this.nupenData = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    eventService
+      .argenAda()
+      .then((response) => {
+        this.adaData = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    eventService
+      .argenAvax()
+      .then((response) => {
+        this.avaxData = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    this.listaArgentBTC.forEach((moneda) => {
+      eventService
+        .argenBTC(moneda)
+        .then((response) => {
+          this.argentBTCData[moneda] = response.data;
+          console.log(`Datos de ${moneda}:`, response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
   },
 };
 </script>

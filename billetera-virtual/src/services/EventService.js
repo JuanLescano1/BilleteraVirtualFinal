@@ -4,34 +4,16 @@ const api = axios.create({
   baseURL: "https://criptoya.com/api",
 });
 export default {
-  async Bitso(moneda, fiat) {
-    try {
-      const url = `/bitsoalpha/${moneda}/${fiat}`;
-      const response = await api.get(url);
-      return response.data;
-    } catch (error) {
-      console.error("Error al llamar a la API:", error);
-      throw error;
-    }
+  argenNupen() {
+    return api.get("/buenbit/nupen/pen");
   },
-  async Cryptomkt(moneda, fiat) {
-    try {
-      const url = `/cryptomkt/${moneda}/${fiat}`;
-      const response = await api.get(url);
-      return response.data;
-    } catch (error) {
-      console.error("Error al llamar a la API:", error);
-      throw error;
-    }
+  argenAda() {
+    return api.get("/buenbit/ada/ars");
   },
-  async Argen(moneda) {
-    try {
-      const url = `/argenbtc/${moneda}/ars`;
-      const response = await api.get(url);
-      return response.data;
-    } catch (error) {
-      console.error("Error al llamar a la API:", error);
-      throw error;
-    }
+  argenAvax() {
+    return api.get("/buenbit/avax/ars");
+  },
+  argenBTC(moneda) {
+    return api.get(`/argenbtc/${moneda}/ars`);
   },
 };
