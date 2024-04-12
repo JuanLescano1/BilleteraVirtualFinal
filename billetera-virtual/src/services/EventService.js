@@ -4,9 +4,16 @@ const api = axios.create({
   baseURL: "https://criptoya.com/api",
 });
 export default {
-    llamadoExchanges(exchange, moneda, unidad) {
-      const url = `/${exchange}/${moneda}/${unidad}/`;
-  
-      return api2.get(url);
-    },
+  argenNupen() {
+    return api.get("/buenbit/nupen/pen");
+  },
+  argenAda() {
+    return api.get("/buenbit/ada/ars");
+  },
+  argenAvax() {
+    return api.get("/buenbit/avax/ars");
+  },
+  argenBTC(moneda) {
+    return api.get(`/argenbtc/${moneda}/ars`);
+  },
 };
