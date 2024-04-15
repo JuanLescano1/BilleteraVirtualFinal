@@ -1,12 +1,14 @@
 <template>
-  <img src="@\components\Imagenes\FondoInicioSesion.jpg" id="fondo" />
-  <div id="ingresoDeUsuario">
-    <h2>Ingrese su ID</h2>
-    <div id="imagen">
-      <img src="@\components\Imagenes\Usuario-removebg-preview.png" />
+  <div>
+    <img src="@\components\Imagenes\FondoInicioSesion.jpg" id="fondo" />
+    <div id="ingresoDeUsuario">
+      <h2>Ingrese su ID</h2>
+      <div id="imagen">
+        <img src="@\components\Imagenes\Usuario-removebg-preview.png" />
+      </div>
+      <input v-model.trim="idUsuario" id="id" />
+      <button v-on:click="controlDeInicio">Ingresar</button>
     </div>
-    <input v-model.trim="idUsuario" id="id" />
-    <button v-on:click="controlDeInicio">Ingresar</button>
   </div>
 </template>
 
@@ -23,7 +25,7 @@ export default {
     controlDeInicio() {
       if (this.idUsuario !== "") {
         this.inicio(this.idUsuario);
-        this.$router.push("/usuario");
+        this.$router.push("/crypto");
       } else {
         alert("Usuario no valido");
       }

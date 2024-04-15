@@ -1,14 +1,23 @@
 <template>
   <div>
-    <h1>Monedas del</h1>
-    <div v-if="adaData && nupenData && avaxData">
+    <h1 v-if="error">No se puedieron cargar los datos</h1>
+    <div v-if="!carga && !error">
       <h2>s</h2>
       <ul>
-        <li>{{ adaData }}</li>
+        <li>{{ adaData.ask }}</li>
+        <li>{{ avaxData.totalAsk }}</li>
+        <li>{{ nupenData.time }}</li>
       </ul>
-      <ul>
+      <ul
+        v-if="
+          argentBTCData.BTC &&
+          argentBTCData.DAI &&
+          argentBTCData.ETH &&
+          argentBTCData.USDT
+        "
+      >
         <li v-for="(data, moneda) in argentBTCData" :key="moneda">
-          {{ moneda }}: {{ data }}
+          {{ moneda }}: {{ data.bid }}
         </li>
       </ul>
     </div>
@@ -29,44 +38,29 @@ export default {
         ETH: null,
         USDT: null,
       },
+      carga: true,
+      error: false,
     };
   },
-  created() {
-    eventService
-      .argenNupen()
-      .then((response) => {
-        this.nupenData = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    eventService
-      .argenAda()
-      .then((response) => {
-        this.adaData = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    eventService
-      .argenAvax()
-      .then((response) => {
-        this.avaxData = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    this.listaArgentBTC.forEach((moneda) => {
-      eventService
-        .argenBTC(moneda)
-        .then((response) => {
-          this.argentBTCData[moneda] = response.data;
-          console.log(`Datos de ${moneda}:`, response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    });
+  async created() {
+    try {
+      const responseNupen = await eventService.argenNupen();
+      this.nupenData = responseNupen.data;
+      this.adaData = (await eventService.argenAda()).data;
+      const responseAvax = await eventService.argenAvax();
+      this.avaxData = responseAvax.data;
+      for (const moneda of this.listaArgentBTC) {
+        const responseBTC = await eventService.argenBTC(moneda);
+        this.argentBTCData[moneda] = responseBTC.data;
+        console.log(this.argentBTCData[moneda]);
+      }
+      console.log(this.adaData);
+      console.log(responseAvax);
+      this.carga = false;
+    } catch (error) {
+      console.log(error);
+      this.error = true;
+    }
   },
 };
 </script>
