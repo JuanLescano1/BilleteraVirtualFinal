@@ -1,12 +1,28 @@
 <template>
   <div>
     <nav>
-      <router-link to="/">Inicio</router-link> |
-      <router-link to="/about">Info</router-link>
+      <router-link v-if="!usuarioAutenticado" to="/">Inicio</router-link> |
+      <router-link v-if="!usuarioAutenticado" to="/about">Info</router-link>
+      <router-link v-if="usuarioAutenticado" to="/crypto">
+        Monedas
+      </router-link>
+      |
+      <router-link v-if="usuarioAutenticado" to="/usuario">Usuario</router-link>
+      <router-link v-if="usuarioAutenticado" to="/usuario">Compra</router-link>
+      <router-link v-if="usuarioAutenticado" to="/usuario">Venta</router-link>
+      <router-link v-if="usuarioAutenticado" to="/usuario">Historial</router-link>
     </nav>
     <router-view />
   </div>
 </template>
+<script>
+import { mapGetters } from "vuex";
+export default {
+  computed: {
+    ...mapGetters(["usuarioAutenticado"]),
+  },
+};
+</script>
 
 <style>
 #app {
