@@ -10,7 +10,9 @@
       <router-link v-if="usuarioAutenticado" to="/usuario">Usuario</router-link>
       <router-link v-if="usuarioAutenticado" to="/usuario">Compra</router-link>
       <router-link v-if="usuarioAutenticado" to="/usuario">Venta</router-link>
-      <router-link v-if="usuarioAutenticado" to="/usuario">Historial</router-link>
+      <router-link v-if="usuarioAutenticado" to="/usuario">
+        Historial
+      </router-link>
     </nav>
     <router-view />
   </div>
