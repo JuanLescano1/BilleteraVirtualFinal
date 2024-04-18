@@ -8,14 +8,7 @@
         <li>{{ avaxData.totalAsk }}</li>
         <li>{{ nupenData.time }}</li>
       </ul>
-      <ul
-        v-if="
-          argentBTCData.BTC &&
-          argentBTCData.DAI &&
-          argentBTCData.ETH &&
-          argentBTCData.USDT
-        "
-      >
+      <ul>
         <li v-for="(data, moneda) in argentBTCData" :key="moneda">
           {{ moneda }}: {{ data.bid }}
         </li>
