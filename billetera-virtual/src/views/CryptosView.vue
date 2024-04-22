@@ -4,20 +4,49 @@
     <div v-if="!carga && !error">
       <h2>s</h2>
       <ul>
-        <li>{{ adaData.ask }}</li>
-        <li>{{ avaxData.totalAsk }}</li>
-        <li>{{ nupenData.time }}</li>
+        <li>
+          {{ adaData }}
+          <button>compra</button>
+        </li>
+        <li>
+          {{ avaxData }}
+          <button>compra</button>
+        </li>
+        <li>
+          {{ nupenData }}
+          <button>compra</button>
+        </li>
       </ul>
       <ul>
         <li v-for="(data, moneda) in argentBTCData" :key="moneda">
-          {{ moneda }}: {{ data.bid }}
+          {{ moneda }}: {{ data }}
+          <button>compra</button>
         </li>
       </ul>
     </div>
   </div>
 </template>
 <script>
-import eventService from "@/services/EventService.js";
+import { mapState, mapActions } from "vuex";
+export default {
+  computed: {
+    ...mapState([
+      "nupenData",
+      "adaData",
+      "avaxData",
+      "argentBTCData",
+      "carga",
+      "error",
+    ]),
+  },
+  created() {
+    this.inicio();
+  },
+  methods: {
+    ...mapActions(["inicio"]),
+  },
+};
+/*import eventService from "@/services/EventService.js";
 export default {
   data() {
     return {
@@ -55,6 +84,6 @@ export default {
       this.error = true;
     }
   },
-};
+};*/
 </script>
 <style></style>
