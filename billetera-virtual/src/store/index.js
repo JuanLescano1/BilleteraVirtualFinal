@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import eventService from "@/services/EventService.js";
 
 export default createStore({
   state: {
@@ -6,6 +7,18 @@ export default createStore({
       localStorage.getItem("usuarioAutenticado") || "false"
     ),
     usuarios: JSON.parse(localStorage.getItem("usuarios") || "[]"),
+    nupenData: null,
+    adaData: null,
+    avaxData: null,
+    listaArgentBTC: ["BTC", "DAI", "ETH", "USDT"],
+    argentBTCData: {
+      BTC: null,
+      DAI: null,
+      ETH: null,
+      USDT: null,
+    },
+    carga: true,
+    error: false,
   },
   getters: {
     usuarioIniciado(state) {
@@ -33,6 +46,24 @@ export default createStore({
         localStorage.setItem("usuarios", JSON.stringify(state.usuarios));
       }
     },
+    actNupenData(state, data) {
+      state.nupenData = data;
+    },
+    actAdaData(state, data) {
+      state.adaData = data;
+    },
+    actAvaxData(state, data) {
+      state.avaxData = data;
+    },
+    actArgentBTCData(state, { moneda, data }) {
+      state.argentBTCData[moneda] = data;
+    },
+    actCarga(state, value) {
+      state.carga = value;
+    },
+    actError(state, value) {
+      state.error = value;
+    },
   },
   actions: {
     inicio({ commit }, idUsuario) {
@@ -45,6 +76,26 @@ export default createStore({
       commit("establecerAutenticado", false);
       localStorage.setItem("usuarioAutenticado", false);
     },
+    async consultaApi({ commit }) {
+      try {
+        const responseNupen = await eventService.argenNupen();
+        commit("actNupenData", responseNupen.data);
+        const adaData = (await eventService.argenAda()).data;
+        commit("actAdaData", adaData);
+        const responseAvax = await eventService.argenAvax();
+        commit("actAvaxData", responseAvax.data);
+        for (const moneda of this.listaArgentBTC) {
+          const responseBTC = await eventService.argenBTC(moneda);
+          commit("actArgentBTCData", { moneda, data: responseBTC.data });
+          console.log(responseBTC.data);
+        }
+        console.log(this.adaData);
+        console.log(responseAvax);
+        commit("actCarga", false);
+      } catch (error) {
+        console.log(error);
+        commit("actError", true);
+      }
+    },
   },
-  modules: {},
 });
