@@ -72,16 +72,19 @@ export default createStore({
     },
     async consultaApi({ commit }) {
       try {
-        const responseNupen = await eventService.argenNupen();
-        commit("actNupenData", responseNupen.data);
+        const responseNupen = (await eventService.argenNupen()).data;
+        commit("actNupenData", responseNupen);
         const adaData = (await eventService.argenAda()).data;
         commit("actAdaData", adaData);
-        const responseAvax = await eventService.argenAvax();
-        commit("actAvaxData", responseAvax.data);
-        for (const moneda of this.listaArgentBTC) {
-          const responseBTC = await eventService.argenBTC(moneda);
-          commit("actArgentBTCData", { moneda, data: responseBTC.data });
-          console.log(responseBTC.data);
+        const responseAvax = (await eventService.argenAvax()).data;
+        commit("actAvaxData", responseAvax);
+        console.log("ArgenAda", adaData);
+        console.log("Nupen", responseNupen);
+        console.log("Avax", responseAvax);
+        for (const moneda of this.state.listaArgentBTC) {
+          const responseBTC = (await eventService.argenBTC(moneda)).data;
+          commit("actArgentBTCData", { moneda, data: responseBTC });
+          console.log("responseBTC", responseBTC);
         }
         console.log(this.adaData);
         console.log(responseAvax);
