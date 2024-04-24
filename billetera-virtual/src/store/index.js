@@ -21,12 +21,6 @@ export default createStore({
     error: false,
   },
   getters: {
-    usuarioIniciado(state) {
-      const id = localStorage.getItem("idUsuario");
-      const usuario = state.usuarios.find((usuario) => usuario.id === id);
-      console.log("Usuario iniciado:", usuario);
-      return usuario;
-    },
     usuarioAutenticado(state) {
       const usuarioCerrado = state.usuarioAutenticado;
       console.log("usuario cerrado", usuarioCerrado);

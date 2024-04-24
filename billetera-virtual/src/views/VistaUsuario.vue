@@ -1,7 +1,7 @@
 <template>
   <div id="background">
     <div id="sd">
-      <h1>ds:{{ usuarioIniciado.id }}</h1>
+      <h1>ds:{{ usuario.id }}</h1>
       <button @click="cerrarSesion">Cerrar sesión</button>
       <p v-if="!usuarioAutenticado">Usuario no autenticado</p>
       <p v-else>Usuario autenticado</p>
@@ -10,11 +10,21 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { useStore } from "vuex";
+import { computed } from "vue";
 
 export default {
-  computed: {
-    ...mapGetters(["usuarioIniciado", "usuarioAutenticado"]),
+  setup() {
+    const store = useStore();
+    const usuario = computed(() => {
+      const id = localStorage.getItem("idUsuario");
+      return store.state.usuarios.find((usuario) => usuario.id === id) || {};
+    });
+    const usuarioAutenticado = computed(() => store.state.usuarioAutenticado);
+    return {
+      usuarioAutenticado,
+      usuario,
+    };
   },
   methods: {
     cerrarSesion() {
