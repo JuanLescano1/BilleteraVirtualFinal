@@ -12,6 +12,7 @@
 <script>
 import { useStore } from "vuex";
 import { computed } from "vue";
+import { mapGetters } from "vuex";
 
 export default {
   setup() {
@@ -20,13 +21,12 @@ export default {
       const id = localStorage.getItem("idUsuario");
       return store.state.usuarios.find((usuario) => usuario.id === id) || {};
     });
-    const usuarioAutenticado = computed(() => store.state.usuarioAutenticado);
     return {
-      usuarioAutenticado,
       usuario,
     };
   },
   methods: {
+    ...mapGetters(["usuarioAutenticado"]),
     cerrarSesion() {
       this.$store.dispatch("cierre");
       this.$router.push("/");

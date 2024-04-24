@@ -40,10 +40,10 @@ export default {
     ]),
   },
   created() {
-    this.inicio();
+    this.consultaApi();
   },
   methods: {
-    ...mapActions(["inicio"]),
+    ...mapActions(["consultaApi"]),
   },
 };
 /*import eventService from "@/services/EventService.js";
