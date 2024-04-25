@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 v-if="error">No se puedieron cargar los datos</h1>
+    <h1 v-if="error">No se puedieron cargar los datos obtenidos de la API</h1>
     <div v-if="!carga && !error">
       <h2>s</h2>
       <ul>

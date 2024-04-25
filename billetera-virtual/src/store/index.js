@@ -71,28 +71,32 @@ export default createStore({
       localStorage.setItem("usuarioAutenticado", false);
     },
     async consultaApi({ commit }) {
-      try {
-        const responseNupen = (await eventService.argenNupen()).data;
-        commit("actNupenData", responseNupen);
-        const adaData = (await eventService.argenAda()).data;
-        commit("actAdaData", adaData);
-        const responseAvax = (await eventService.argenAvax()).data;
-        commit("actAvaxData", responseAvax);
-        console.log("ArgenAda", adaData);
-        console.log("Nupen", responseNupen);
-        console.log("Avax", responseAvax);
-        for (const moneda of this.state.listaArgentBTC) {
-          const responseBTC = (await eventService.argenBTC(moneda)).data;
-          commit("actArgentBTCData", { moneda, data: responseBTC });
-          console.log("responseBTC", responseBTC);
+      const actApi = async () => {
+        try {
+          const responseNupen = (await eventService.argenNupen()).data;
+          commit("actNupenData", responseNupen);
+          const adaData = (await eventService.argenAda()).data;
+          commit("actAdaData", adaData);
+          const responseAvax = (await eventService.argenAvax()).data;
+          commit("actAvaxData", responseAvax);
+          console.log("ArgenAda", adaData);
+          console.log("Nupen", responseNupen);
+          console.log("Avax", responseAvax);
+          for (const moneda of this.state.listaArgentBTC) {
+            const responseBTC = (await eventService.argenBTC(moneda)).data;
+            commit("actArgentBTCData", { moneda, data: responseBTC });
+            console.log("responseBTC", responseBTC);
+          }
+          console.log(this.adaData);
+          console.log(responseAvax);
+          commit("actCarga", false);
+        } catch (error) {
+          console.log(error);
+          commit("actError", true);
         }
-        console.log(this.adaData);
-        console.log(responseAvax);
-        commit("actCarga", false);
-      } catch (error) {
-        console.log(error);
-        commit("actError", true);
-      }
+      };
+      setInterval(actApi, 60000);
+      await actApi();
     },
   },
 });
