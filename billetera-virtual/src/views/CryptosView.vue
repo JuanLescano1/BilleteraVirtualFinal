@@ -6,21 +6,21 @@
       <ul>
         <li>
           {{ adaData }}
-          <button>compra</button>
+          <button>Ver detalles</button>
         </li>
         <li>
           {{ avaxData }}
-          <button>compra</button>
+          <button>Ver detalles</button>
         </li>
         <li>
           {{ nupenData }}
-          <button>compra</button>
+          <button>Ver detalles</button>
         </li>
       </ul>
       <ul>
         <li v-for="(data, moneda) in argentBTCData" :key="moneda">
           {{ moneda }}: {{ data }}
-          <button>compra</button>
+          <button>Ver detalles</button>
         </li>
       </ul>
     </div>
