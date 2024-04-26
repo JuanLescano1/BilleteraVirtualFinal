@@ -26,6 +26,11 @@ const routes = [
     name: "crypto",
     component: () => import("../views/CryptosView.vue"),
   },
+  {
+    path: "/detalles/:moneda",
+    name: "detalles",
+    component: () => import("../views/detallesView.vue"),
+  },
 ];
 
 const router = createRouter({
