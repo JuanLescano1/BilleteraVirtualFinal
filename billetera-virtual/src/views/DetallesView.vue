@@ -8,6 +8,12 @@
 <script>
 import { mapState } from "vuex";
 export default {
+  mounted() {
+    const detalles = JSON.parse(sessionStorage.getItem("detalle"));
+    if (detalles) {
+      this.$store.commit("guardarDetalles", detalles);
+    }
+  },
   computed: {
     ...mapState(["detalle"]),
   },
