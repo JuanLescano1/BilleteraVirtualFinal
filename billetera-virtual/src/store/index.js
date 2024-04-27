@@ -61,6 +61,7 @@ export default createStore({
     },
     guardarDetalles(state, { moneda, data }) {
       state.detalle = { moneda, data };
+      sessionStorage.setItem("detalle", JSON.stringify({ moneda, data }));
     },
   },
   actions: {
