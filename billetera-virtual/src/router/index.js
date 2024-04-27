@@ -28,7 +28,7 @@ const routes = [
   },
   {
     path: "/detalles/:moneda",
-    name: "detalles",
+    name: "Detalles",
     component: () => import("../views/DetallesView.vue"),
     props: true,
   },

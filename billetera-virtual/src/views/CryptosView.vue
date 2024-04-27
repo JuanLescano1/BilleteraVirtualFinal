@@ -20,7 +20,7 @@
       <ul>
         <li v-for="(data, moneda) in argentBTCData" :key="moneda">
           {{ moneda }}: {{ data }}
-          <button @click="verDetalles(moneda)">Ver detalles</button>
+          <button @click="verDetalles(moneda, data)">Ver detalles</button>
         </li>
       </ul>
     </div>
@@ -44,7 +44,8 @@ export default {
   },
   methods: {
     ...mapActions(["consultaApi"]),
-    verDetalles(moneda) {
+    verDetalles(moneda, data) {
+      this.$store.commit("guardarDetalles", { moneda, data });
       this.$router.push({ name: "Detalles", params: { moneda: moneda } });
     },
   },
