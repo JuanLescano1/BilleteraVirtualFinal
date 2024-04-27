@@ -29,7 +29,8 @@ const routes = [
   {
     path: "/detalles/:moneda",
     name: "detalles",
-    component: () => import("../views/detallesView.vue"),
+    component: () => import("../views/DetallesView.vue"),
+    props: true,
   },
 ];
 

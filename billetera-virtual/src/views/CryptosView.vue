@@ -20,7 +20,7 @@
       <ul>
         <li v-for="(data, moneda) in argentBTCData" :key="moneda">
           {{ moneda }}: {{ data }}
-          <button>Ver detalles</button>
+          <button @click="verDetalles(moneda)">Ver detalles</button>
         </li>
       </ul>
     </div>
@@ -44,6 +44,9 @@ export default {
   },
   methods: {
     ...mapActions(["consultaApi"]),
+    verDetalles(moneda) {
+      this.$router.push({ name: "Detalles", params: { moneda: moneda } });
+    },
   },
 };
 /*import eventService from "@/services/EventService.js";
