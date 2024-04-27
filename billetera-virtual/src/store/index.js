@@ -19,6 +19,7 @@ export default createStore({
     },
     carga: true,
     error: false,
+    detalle: null,
   },
   getters: {
     usuarioAutenticado(state) {
@@ -57,6 +58,9 @@ export default createStore({
     },
     actError(state, value) {
       state.error = value;
+    },
+    guardarDetalles(state, { moneda, data }) {
+      state.detalle = { moneda, data };
     },
   },
   actions: {
