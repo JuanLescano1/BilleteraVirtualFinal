@@ -19,13 +19,18 @@ export default createStore({
     },
     carga: true,
     error: false,
-    detalle: null,
+    detalle: JSON.parse(sessionStorage.getItem("detalle") || "[]"),
   },
   getters: {
     usuarioAutenticado(state) {
       const usuarioCerrado = state.usuarioAutenticado;
       console.log("usuario cerrado", usuarioCerrado);
       return usuarioCerrado;
+    },
+    detallesMoneda(state) {
+      const detalleMoneda = state.detalle;
+      console.log("detalles de la moneta", detalleMoneda);
+      return detalleMoneda;
     },
   },
   mutations: {

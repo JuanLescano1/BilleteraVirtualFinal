@@ -1,21 +1,32 @@
 <template>
   <div v-if="detalle">
     <h1>Detalles de la moneda: {{ $route.params.moneda }}</h1>
-    <h2>Nombre: {{ detalle && detalle.data.ask }}</h2>
-    <h2>Precio: {{ detalle && detalle.data.bid }}</h2>
+    <h2>Precio: {{ detalle.data.ask }}</h2>
+    <h2>Tiempo: {{ detalle.data.time }}</h2>
+    <h2>ds: {{ detallesMoneda.data.ask }}</h2>
+    <h2>ds: {{ detallesMoneda.data.ask }}</h2>
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
-  mounted() {
+  /*  mounted() {
     const detalles = JSON.parse(sessionStorage.getItem("detalle"));
     if (detalles) {
-      this.$store.commit("guardarDetalles", detalles);
+      this.moneda = detalles.moneda;
+      this.data = detalles.data;
     }
   },
+  data() {
+    return {
+      moneda: null,
+      data: null,
+    };
+  },
+  */
   computed: {
     ...mapState(["detalle"]),
+    ...mapGetters(["detallesMoneda"]),
   },
 };
 </script>
