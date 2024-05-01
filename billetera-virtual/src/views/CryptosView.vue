@@ -25,6 +25,7 @@
         <p>Venta: {{ nupenData.bid }}</p>
         <p>Venta con comisiones: {{ nupenData.totalBid }}</p>
         <p>Tiempo actualizacion: {{ nupenData.time }}</p>
+        <button @click="comprar(moneda, data)">Comprar</button>
       </div>
       <h2>ADA</h2>
       <button @click="mostrarDetalles('ada')">Ver detalles</button>
@@ -34,6 +35,7 @@
         <p>Venta: {{ adaData.bid }}</p>
         <p>Venta con comisiones: {{ adaData.totalBid }}</p>
         <p>Tiempo actualizacion: {{ adaData.time }}</p>
+        <button @click="comprar(moneda, data)">Comprar</button>
       </div>
       <h2>AVAX</h2>
       <button @click="mostrarDetalles('avax')">Ver detalles</button>
@@ -43,6 +45,7 @@
         <p>Venta: {{ avaxData.bid }}</p>
         <p>Venta con comisiones: {{ avaxData.totalBid }}</p>
         <p>Tiempo actualizacion: {{ avaxData.time }}</p>
+        <button @click="comprar(moneda, data)">Comprar</button>
       </div>
     </div>
     <div v-if="argenBTC">
@@ -55,6 +58,7 @@
           <p>Precio: {{ data.bid }}</p>
           <p>Precio: {{ data.totalBid }}</p>
           <p>Precio: {{ data.time }}</p>
+          <button @click="comprar(moneda, data)">Comprar</button>
         </div>
       </div>
     </div>
@@ -86,13 +90,19 @@ export default {
   },
   methods: {
     ...mapActions(["consultaApi"]),
+    mostrarDetalles(moneda) {
+      this.detalles = this.detalles === moneda ? null : moneda;
+    },
+    comprar(moneda, data) {
+      this.$router.push({
+        name: "Compra",
+        params: { moneda: moneda, data: data },
+      });
+    },
     /*    verDetalles(moneda, data) {
       this.$store.commit("guardarDetalles", { moneda, data });
       this.$router.push({ name: "Detalles", params: { moneda: moneda } });
     }, */
-    mostrarDetalles(moneda) {
-      this.detalles = this.detalles === moneda ? null : moneda;
-    },
   },
 };
 /*import eventService from "@/services/EventService.js";
