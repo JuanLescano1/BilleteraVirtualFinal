@@ -48,15 +48,13 @@
     <div v-if="argenBTC">
       <div v-for="(data, moneda) in argentBTCData" :key="moneda">
         <h2>{{ moneda }}</h2>
-        <button @click="mostrarDetalles('argentBTC', moneda)">
-          Ver detalles
-        </button>
-        <div v-if="detalles === moneda && detalleTipo === 'argentBTC'">
+        <button @click="mostrarDetalles(moneda, data)">Ver detalles</button>
+        <div v-if="detalles === moneda">
           <p>Precio: {{ data.ask }}</p>
-          <p>Precio con comisiones: {{ data.totalAsk }}</p>
-          <p>Venta: {{ data.bid }}</p>
-          <p>Venta con comisiones: {{ data.totalBid }}</p>
-          <p>Tiempo actualizacion: {{ data.time }}</p>
+          <p>Precio: {{ data.totalAsk }}</p>
+          <p>Precio: {{ data.bid }}</p>
+          <p>Precio: {{ data.totalBid }}</p>
+          <p>Precio: {{ data.time }}</p>
         </div>
       </div>
     </div>
@@ -84,22 +82,16 @@ export default {
       detalles: null,
       buenBit: true,
       argenBTC: false,
-      detalleTipo: null,
     };
   },
   methods: {
     ...mapActions(["consultaApi"]),
-    verDetalles(moneda, data) {
+    /*    verDetalles(moneda, data) {
       this.$store.commit("guardarDetalles", { moneda, data });
       this.$router.push({ name: "Detalles", params: { moneda: moneda } });
-    },
-    mostrarDetalles(moneda, tipo) {
-      if (this.detalles === moneda) {
-        this.detalles = null; // Oculta los detalles si ya están visibles
-      } else {
-        this.detalles = moneda; // Muestra los detalles para la moneda seleccionada
-      }
-      this.detalleTipo = tipo;
+    }, */
+    mostrarDetalles(moneda) {
+      this.detalles = this.detalles === moneda ? null : moneda;
     },
   },
 };
