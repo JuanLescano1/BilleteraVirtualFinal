@@ -97,6 +97,7 @@ export default {
       this.detalles = this.detalles === moneda ? null : moneda;
     },
     async comprar(moneda, data) {
+      console.log("envio de datos:", moneda, data);
       await this.$store.dispatch("btnCompra", { moneda, data });
       this.$router.push({ name: "Compra", params: { moneda: moneda } });
     },
