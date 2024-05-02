@@ -19,7 +19,7 @@ export default createStore({
     },
     carga: true,
     error: false,
-    detalle: JSON.parse(sessionStorage.getItem("detalle") || "[]"),
+    datosCompra: null,
   },
   getters: {
     usuarioAutenticado(state) {
@@ -27,10 +27,8 @@ export default createStore({
       console.log("usuario cerrado", usuarioCerrado);
       return usuarioCerrado;
     },
-    detallesMoneda(state) {
-      const detalleMoneda = state.detalle;
-      console.log("detalles de la moneta", detalleMoneda);
-      return detalleMoneda;
+    datosCompra(state) {
+      return state.datosCompra;
     },
   },
   mutations: {
@@ -48,15 +46,19 @@ export default createStore({
     },
     actNupenData(state, data) {
       state.nupenData = data;
+      state.datosCompra = { moneda: "nupen", data };
     },
     actAdaData(state, data) {
       state.adaData = data;
+      state.datosCompra = { moneda: "ada", data };
     },
     actAvaxData(state, data) {
       state.avaxData = data;
+      state.datosCompra = { moneda: "avax", data };
     },
     actArgentBTCData(state, { moneda, data }) {
       state.argentBTCData[moneda] = data;
+      state.datosCompra = { moneda, data };
     },
     actCarga(state, value) {
       state.carga = value;
@@ -64,10 +66,13 @@ export default createStore({
     actError(state, value) {
       state.error = value;
     },
-    guardarDetalles(state, { moneda, data }) {
+    guardarDatosCompra(state, { moneda, data }) {
+      state.datosCompra = { moneda, data };
+    },
+    /*guardarDetalles(state, { moneda, data }) {
       state.detalle = { moneda, data };
       sessionStorage.setItem("detalle", JSON.stringify({ moneda, data }));
-    },
+    },*/
   },
   actions: {
     inicio({ commit }, idUsuario) {
@@ -79,6 +84,9 @@ export default createStore({
     cierre({ commit }) {
       commit("establecerAutenticado", false);
       localStorage.setItem("usuarioAutenticado", false);
+    },
+    btnCompra({ commit }, { moneda, data }) {
+      commit("guardarDatosCompra", { moneda, data });
     },
     async consultaApi({ commit }) {
       const actApi = async () => {
