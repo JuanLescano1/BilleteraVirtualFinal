@@ -56,10 +56,10 @@
           <button @click="mostrarDetalles(moneda, data)">Ver detalles</button>
           <div v-if="detalles === moneda">
             <p>Precio: {{ data.ask }}</p>
-            <p>Precio: {{ data.totalAsk }}</p>
-            <p>Precio: {{ data.bid }}</p>
-            <p>Precio: {{ data.totalBid }}</p>
-            <p>Precio: {{ data.time }}</p>
+            <p>Precio con comisiones: {{ data.totalAsk }}</p>
+            <p>Venta: {{ data.bid }}</p>
+            <p>Venta con comisiones: {{ data.totalBid }}</p>
+            <p>Tiempo actualizacion: {{ data.time }}</p>
             <button @click="comprar(moneda, data)">Comprar</button>
           </div>
         </div>
@@ -83,6 +83,7 @@ export default {
 
   created() {
     this.consultaApi();
+    this.cargarDatos();
   },
   data() {
     return {
@@ -92,13 +93,13 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["consultaApi"]),
+    ...mapActions(["consultaApi", "cargarDatos"]),
     mostrarDetalles(moneda) {
       this.detalles = this.detalles === moneda ? null : moneda;
     },
-    async comprar(moneda, data) {
+    comprar(moneda, data) {
       console.log("envio de datos:", moneda, data);
-      await this.$store.dispatch("btnCompra", { moneda, data });
+      this.$store.dispatch("btnCompra", { moneda, data });
       this.$router.push({ name: "Compra", params: { moneda: moneda } });
     },
     /*    verDetalles(moneda, data) {

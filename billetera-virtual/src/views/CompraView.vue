@@ -6,7 +6,7 @@
       <p>Datos: {{ datosCompra[monedas].totalAsk }}</p>
       <p>Datos: {{ datosCompra[monedas].bid }}</p>
       <p>Datos: {{ datosCompra[monedas].totalBid }}</p>
-      <p>Datos: {{ datosCompra[monedas].time }}</p>
+      <p>Tiempo: {{ datosCompra[monedas].time }}</p>
       <button>Comprar</button>
       <button>Cancelar</button>
     </div>

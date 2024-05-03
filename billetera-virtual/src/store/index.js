@@ -19,7 +19,7 @@ export default createStore({
     },
     carga: true,
     error: false,
-    datosCompra: JSON.parse(localStorage.getItem("datosCompra") || "{}"),
+    datosCompra: {},
   },
   getters: {
     usuarioAutenticado(state) {
@@ -69,7 +69,13 @@ export default createStore({
     guardarDatosCompra(state, { moneda, data }) {
       console.log("Guardando datos en el estado:", moneda, data);
       state.datosCompra[moneda] = data;
-      //localStorage.setItem("datosCompra", JSON.stringify(state.datosCompra));
+      localStorage.setItem("datosCompra", JSON.stringify(state.datosCompra));
+    },
+    cargarDatosCompra(state) {
+      const datosCompra = JSON.parse(
+        localStorage.getItem("datosCompra") || "{}"
+      );
+      state.datosCompra = datosCompra;
     },
     /*guardarDetalles(state, { moneda, data }) {
       state.detalle = { moneda, data };
@@ -90,6 +96,9 @@ export default createStore({
     btnCompra({ commit }, { moneda, data }) {
       console.log("Guardando datos de compra:", moneda, data);
       commit("guardarDatosCompra", { moneda, data });
+    },
+    cargarDatos({ commit }) {
+      commit("cargarDatosCompra");
     },
     async consultaApi({ commit }) {
       const actApi = async () => {
