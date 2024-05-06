@@ -95,7 +95,7 @@ export default createStore({
       //console.log("Guardando datos de compra:", moneda, data);
       commit("guardarDatosCompra", { moneda, data });
     },
-    async consultaApi({ commit }) {
+    consultaApi({ commit }) {
       const actApi = async () => {
         try {
           const responseNupen = (await eventService.argenNupen()).data;
@@ -121,7 +121,7 @@ export default createStore({
         }
       };
       setInterval(actApi, 60000);
-      await actApi();
+      actApi();
     },
   },
 });
