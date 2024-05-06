@@ -10,7 +10,7 @@
         <p>Datos: {{ datosCompra[monedas].totalBid }}</p>
         <p>Tiempo: {{ datosCompra[monedas].time }}</p>
         <input
-          v-model="cantidadAComprar"
+          v-model="cantidad"
           type="number"
           placeholder="Cantidad a comprar"
         />
@@ -26,6 +26,7 @@ export default {
   data() {
     return {
       monedas: null,
+      cantidad: null,
     };
   },
   computed: {
@@ -47,12 +48,20 @@ export default {
     ...mapActions(["consultaApi"]),
     async consultarApi() {
       await this.consultaApi();
-      // Aquí puedes acceder a this.datosCompra para asegurarte de que los datos se hayan actualizado correctamente
       console.log("Datos actualizados:", this.datosCompra);
     },
-    Confirmar() {},
+    Confirmar() {
+      if (this.validarCant()) {
+        alert("Es un numero " + this.cantidad);
+      } else {
+        alert("No");
+      }
+    },
     Cancelar() {
       this.$router.push("/crypto");
+    },
+    validarCant() {
+      return this.cantidad !== null && parseFloat(this.cantidad) >= 0;
     },
   },
 };
