@@ -1,62 +1,67 @@
 <template>
   <div>
-    <button
-      @click="
-        buenBit = true;
-        argenBTC = false;
-      "
-    >
-      BuenBit
-    </button>
-    <button
-      @click="
-        buenBit = false;
-        argenBTC = true;
-      "
-    >
-      argentBTC
-    </button>
-    <div v-if="buenBit">
-      <h2>nuPEN</h2>
-      <button @click="mostrarDetalles('nupen')">Ver detalles</button>
-      <div v-if="detalles === 'nupen'">
-        <p>Precio: {{ nupenData.ask }}</p>
-        <p>Precio con comisiones: {{ nupenData.totalAsk }}</p>
-        <p>Venta: {{ nupenData.bid }}</p>
-        <p>Venta con comisiones: {{ nupenData.totalBid }}</p>
-        <p>Tiempo actualizacion: {{ nupenData.time }}</p>
+    <h1 v-if="error">No se puedieron cargar los datos obtenidos de la API</h1>
+    <div v-if="!carga && !error">
+      <button
+        @click="
+          buenBit = true;
+          argenBTC = false;
+        "
+      >
+        BuenBit
+      </button>
+      <button
+        @click="
+          buenBit = false;
+          argenBTC = true;
+        "
+      >
+        argentBTC
+      </button>
+      <div v-if="buenBit">
+        <h2>nuPEN</h2>
+        <button @click="mostrarDetalles('nupen')">Ver detalles</button>
+        <div v-if="detalles === 'nupen'">
+          <p>Precio: {{ nupenData.ask }}</p>
+          <p>Precio con comisiones: {{ nupenData.totalAsk }}</p>
+          <p>Venta: {{ nupenData.bid }}</p>
+          <p>Venta con comisiones: {{ nupenData.totalBid }}</p>
+          <p>Tiempo actualizacion: {{ nupenData.time }}</p>
+          <button @click="comprar(detalles, nupenData)">Comprar</button>
+        </div>
+        <h2>ADA</h2>
+        <button @click="mostrarDetalles('ada')">Ver detalles</button>
+        <div v-if="detalles === 'ada'">
+          <p>Precio: {{ adaData.ask }}</p>
+          <p>Precio con comisiones: {{ adaData.totalAsk }}</p>
+          <p>Venta: {{ adaData.bid }}</p>
+          <p>Venta con comisiones: {{ adaData.totalBid }}</p>
+          <p>Tiempo actualizacion: {{ adaData.time }}</p>
+          <button @click="comprar(detalles, adaData)">Comprar</button>
+        </div>
+        <h2>AVAX</h2>
+        <button @click="mostrarDetalles('avax')">Ver detalles</button>
+        <div v-if="detalles === 'avax'">
+          <p>Precio: {{ avaxData.ask }}</p>
+          <p>Precio con comisiones: {{ avaxData.totalAsk }}</p>
+          <p>Venta: {{ avaxData.bid }}</p>
+          <p>Venta con comisiones: {{ avaxData.totalBid }}</p>
+          <p>Tiempo actualizacion: {{ avaxData.time }}</p>
+          <button @click="comprar(detalles, avaxData)">Comprar</button>
+        </div>
       </div>
-      <h2>ADA</h2>
-      <button @click="mostrarDetalles('ada')">Ver detalles</button>
-      <div v-if="detalles === 'ada'">
-        <p>Precio: {{ adaData.ask }}</p>
-        <p>Precio con comisiones: {{ adaData.totalAsk }}</p>
-        <p>Venta: {{ adaData.bid }}</p>
-        <p>Venta con comisiones: {{ adaData.totalBid }}</p>
-        <p>Tiempo actualizacion: {{ adaData.time }}</p>
-      </div>
-      <h2>AVAX</h2>
-      <button @click="mostrarDetalles('avax')">Ver detalles</button>
-      <div v-if="detalles === 'avax'">
-        <p>Precio: {{ avaxData.ask }}</p>
-        <p>Precio con comisiones: {{ avaxData.totalAsk }}</p>
-        <p>Venta: {{ avaxData.bid }}</p>
-        <p>Venta con comisiones: {{ avaxData.totalBid }}</p>
-        <p>Tiempo actualizacion: {{ avaxData.time }}</p>
-      </div>
-    </div>
-    <div v-if="argenBTC">
-      <div v-for="(data, moneda) in argentBTCData" :key="moneda">
-        <h2>{{ moneda }}</h2>
-        <button @click="mostrarDetalles('argentBTC', moneda)">
-          Ver detalles
-        </button>
-        <div v-if="detalles === moneda && detalleTipo === 'argentBTC'">
-          <p>Precio: {{ data.ask }}</p>
-          <p>Precio con comisiones: {{ data.totalAsk }}</p>
-          <p>Venta: {{ data.bid }}</p>
-          <p>Venta con comisiones: {{ data.totalBid }}</p>
-          <p>Tiempo actualizacion: {{ data.time }}</p>
+      <div v-if="argenBTC">
+        <div v-for="(data, moneda) in argentBTCData" :key="moneda">
+          <h2>{{ moneda }}</h2>
+          <button @click="mostrarDetalles(moneda, data)">Ver detalles</button>
+          <div v-if="detalles === moneda">
+            <p>Precio: {{ data.ask }}</p>
+            <p>Precio con comisiones: {{ data.totalAsk }}</p>
+            <p>Venta: {{ data.bid }}</p>
+            <p>Venta con comisiones: {{ data.totalBid }}</p>
+            <p>Tiempo actualizacion: {{ data.time }}</p>
+            <button @click="comprar(moneda, data)">Comprar</button>
+          </div>
         </div>
       </div>
     </div>
@@ -78,29 +83,29 @@ export default {
 
   created() {
     this.consultaApi();
+    this.cargarDatos();
   },
   data() {
     return {
       detalles: null,
       buenBit: true,
       argenBTC: false,
-      detalleTipo: null,
     };
   },
   methods: {
-    ...mapActions(["consultaApi"]),
-    verDetalles(moneda, data) {
+    ...mapActions(["consultaApi", "cargarDatos"]),
+    mostrarDetalles(moneda) {
+      this.detalles = this.detalles === moneda ? null : moneda;
+    },
+    comprar(moneda, data) {
+      console.log("envio de datos:", moneda, data);
+      this.$store.dispatch("btnCompra", { moneda, data });
+      this.$router.push({ name: "Compra", params: { moneda: moneda } });
+    },
+    /*    verDetalles(moneda, data) {
       this.$store.commit("guardarDetalles", { moneda, data });
       this.$router.push({ name: "Detalles", params: { moneda: moneda } });
-    },
-    mostrarDetalles(moneda, tipo) {
-      if (this.detalles === moneda) {
-        this.detalles = null; // Oculta los detalles si ya están visibles
-      } else {
-        this.detalles = moneda; // Muestra los detalles para la moneda seleccionada
-      }
-      this.detalleTipo = tipo;
-    },
+    }, */
   },
 };
 /*import eventService from "@/services/EventService.js";

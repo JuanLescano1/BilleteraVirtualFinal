@@ -32,6 +32,11 @@ const routes = [
     component: () => import("../views/DetallesView.vue"),
     props: true,
   },
+  {
+    path: "/compra/:moneda",
+    name: "Compra",
+    component: () => import("../views/CompraView.vue"),
+  },
 ];
 
 const router = createRouter({
