@@ -4,8 +4,8 @@ const api = axios.create({
   baseURL: "https://criptoya.com/api",
 });
 export default {
-  argenNupen() {
-    return api.get("/buenbit/nupen/pen");
+  argenNuars() {
+    return api.get("/buenbit/nuars/ars");
   },
   argenAda() {
     return api.get("/buenbit/ada/ars");

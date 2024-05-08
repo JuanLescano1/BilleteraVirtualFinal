@@ -13,6 +13,7 @@
           v-model="cantidad"
           type="number"
           placeholder="Cantidad a comprar"
+          step="0.0001"
         />
         <button @click="Confirmar()">Comprar</button>
         <button @click="Cancelar()">Cancelar</button>
@@ -22,7 +23,23 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { useStore } from "vuex";
+import { computed } from "vue";
 export default {
+  setup() {
+    const store = useStore();
+    const usuario = computed(() => {
+      const id = localStorage.getItem("idUsuario");
+      return store.state.usuarios.find((usuario) => usuario.id === id) || {};
+    });
+    const autenticado = computed(() => {
+      return store.getters.usuarioAutenticado;
+    });
+    return {
+      usuario,
+      autenticado,
+    };
+  },
   data() {
     return {
       monedas: null,
@@ -52,9 +69,18 @@ export default {
     },
     Confirmar() {
       if (this.validarCant()) {
-        alert("Es un numero " + this.cantidad);
+        console.log(this.cantComprada());
+        const data = {
+          user_id: this.usuario.id,
+          action: "purchase",
+          crypto_code: this.monedas,
+          crypto_amount: this.cantidad,
+          money: this.cantComprada(),
+          datetime: this.datosCompra[this.monedas].ask,
+        };
+        console.log("data", data);
       } else {
-        alert("No");
+        alert("Ingrese un dato valido.");
       }
     },
     Cancelar() {
@@ -62,6 +88,11 @@ export default {
     },
     validarCant() {
       return this.cantidad !== null && parseFloat(this.cantidad) >= 0;
+    },
+    cantComprada() {
+      const precioUnidad = this.datosCompra[this.monedas].ask;
+      const precioAPagar = precioUnidad * this.cantidad;
+      return precioAPagar;
     },
   },
 };
