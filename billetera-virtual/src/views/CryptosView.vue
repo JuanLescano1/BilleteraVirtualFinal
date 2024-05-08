@@ -19,15 +19,15 @@
         argentBTC
       </button>
       <div v-if="buenBit">
-        <h2>nuPEN</h2>
-        <button @click="mostrarDetalles('nupen')">Ver detalles</button>
-        <div v-if="detalles === 'nupen'">
-          <p>Precio: {{ nupenData.ask }}</p>
-          <p>Precio con comisiones: {{ nupenData.totalAsk }}</p>
-          <p>Venta: {{ nupenData.bid }}</p>
-          <p>Venta con comisiones: {{ nupenData.totalBid }}</p>
-          <p>Tiempo actualizacion: {{ nupenData.time }}</p>
-          <button @click="comprar(detalles, nupenData)">Comprar</button>
+        <h2>nuARS</h2>
+        <button @click="mostrarDetalles('nuars')">Ver detalles</button>
+        <div v-if="detalles === 'nuars'">
+          <p>Precio: {{ nuarsData.ask }}</p>
+          <p>Precio con comisiones: {{ nuarsData.totalAsk }}</p>
+          <p>Venta: {{ nuarsData.bid }}</p>
+          <p>Venta con comisiones: {{ nuarsData.totalBid }}</p>
+          <p>Tiempo actualizacion: {{ nuarsData.time }}</p>
+          <button @click="comprar(detalles, nuarsData)">Comprar</button>
         </div>
         <h2>ADA</h2>
         <button @click="mostrarDetalles('ada')">Ver detalles</button>
@@ -72,7 +72,7 @@ import { mapState, mapActions } from "vuex";
 export default {
   computed: {
     ...mapState([
-      "nupenData",
+      "nuarsData",
       "adaData",
       "avaxData",
       "argentBTCData",
@@ -83,7 +83,6 @@ export default {
 
   created() {
     this.consultaApi();
-    this.cargarDatos();
   },
   data() {
     return {
@@ -93,7 +92,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["consultaApi", "cargarDatos"]),
+    ...mapActions(["consultaApi"]),
     mostrarDetalles(moneda) {
       this.detalles = this.detalles === moneda ? null : moneda;
     },

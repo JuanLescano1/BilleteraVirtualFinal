@@ -7,7 +7,7 @@ export default createStore({
       localStorage.getItem("usuarioAutenticado") || "false"
     ),
     usuarios: JSON.parse(localStorage.getItem("usuarios") || "[]"),
-    nupenData: null,
+    nuarsData: null,
     adaData: null,
     avaxData: null,
     listaArgentBTC: ["BTC", "DAI", "ETH", "USDT"],
@@ -44,9 +44,9 @@ export default createStore({
         localStorage.setItem("usuarios", JSON.stringify(state.usuarios));
       }
     },
-    actNupenData(state, data) {
-      state.nupenData = data;
-      state.datosCompra.nupen = data;
+    actNuarsData(state, data) {
+      state.nuarsData = data;
+      state.datosCompra.nuars = data;
       localStorage.setItem("datosCompra", JSON.stringify(state.datosCompra));
     },
     actAdaData(state, data) {
@@ -98,14 +98,14 @@ export default createStore({
     consultaApi({ commit }) {
       const actApi = async () => {
         try {
-          const responseNupen = (await eventService.argenNupen()).data;
-          commit("actNupenData", responseNupen);
+          const responseNuars = (await eventService.argenNuars()).data;
+          commit("actNuarsData", responseNuars);
           const adaData = (await eventService.argenAda()).data;
           commit("actAdaData", adaData);
           const responseAvax = (await eventService.argenAvax()).data;
           commit("actAvaxData", responseAvax);
           console.log("ArgenAda", adaData);
-          console.log("Nupen", responseNupen);
+          console.log("Nuars", responseNuars);
           console.log("Avax", responseAvax);
           for (const moneda of this.state.listaArgentBTC) {
             const responseBTC = (await eventService.argenBTC(moneda)).data;
