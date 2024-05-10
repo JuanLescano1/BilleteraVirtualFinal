@@ -25,6 +25,7 @@
 import { mapGetters, mapActions } from "vuex";
 import { useStore } from "vuex";
 import { computed } from "vue";
+import eventService from "@/services/EventService";
 export default {
   setup() {
     const store = useStore();
@@ -62,7 +63,7 @@ export default {
     this.consultarApi();
   },
   methods: {
-    ...mapActions(["consultaApi"]),
+    ...mapActions(["consultaApi", "dandoFormatoFecha"]),
     async consultarApi() {
       await this.consultaApi();
       console.log("Datos actualizados:", this.datosCompra);
@@ -70,15 +71,24 @@ export default {
     Confirmar() {
       if (this.validarCant()) {
         console.log(this.cantComprada());
-        const data = {
+        const infoCompra = {
           user_id: this.usuario.id,
           action: "purchase",
           crypto_code: this.monedas,
           crypto_amount: this.cantidad,
           money: this.cantComprada(),
-          datetime: this.datosCompra[this.monedas].ask,
+          datetime: this.darFomatoFecha(),
         };
-        console.log("data", data);
+        console.log("data", infoCompra);
+        eventService
+          .compra(infoCompra)
+          .then((response) => {
+            console.log("Respuesta de la api: ", response.data);
+          })
+          .catch((error) => {
+            console.error("Error de la api: ", error);
+          });
+        //console.log("data", infoCompra);
       } else {
         alert("Ingrese un dato valido.");
       }
@@ -94,6 +104,7 @@ export default {
       const precioAPagar = precioUnidad * this.cantidad;
       return precioAPagar;
     },
+    darFomatoFecha() {},
   },
 };
 </script>
