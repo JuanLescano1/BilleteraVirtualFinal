@@ -3,6 +3,10 @@ import axios from "axios";
 const api = axios.create({
   baseURL: "https://criptoya.com/api",
 });
+const apiClient = axios.create({
+  baseURL: "https://laboratorio3-f36a.restdb.io/rest",
+  headers: { "x-apikey": "60eb09146661365596af552f" },
+});
 export default {
   argenNuars() {
     return api.get("/buenbit/nuars/ars");
@@ -15,5 +19,8 @@ export default {
   },
   argenBTC(moneda) {
     return api.get(`/argenbtc/${moneda}/ars`);
+  },
+  compra(infoCompra) {
+    return apiClient.post("/transactions", infoCompra);
   },
 };

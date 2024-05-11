@@ -20,6 +20,7 @@ export default createStore({
     carga: true,
     error: false,
     datosCompra: JSON.parse(localStorage.getItem("datosCompra") || "{}"),
+    //formatoFecha: null,
   },
   getters: {
     usuarioAutenticado(state) {
@@ -75,6 +76,9 @@ export default createStore({
       state.datosCompra[moneda] = data;
       localStorage.setItem("datosCompra", JSON.stringify(state.datosCompra));
     },
+    /*formatoDeFecha(state, formatoFecha) {
+      state.formatoFecha = formatoFecha;
+    },*/
     /*guardarDetalles(state, { moneda, data }) {
       state.detalle = { moneda, data };
       sessionStorage.setItem("detalle", JSON.stringify({ moneda, data }));
@@ -95,6 +99,11 @@ export default createStore({
       //console.log("Guardando datos de compra:", moneda, data);
       commit("guardarDatosCompra", { moneda, data });
     },
+    /*dandoFormatoFecha({ commit }, fechaVista) {
+      const formatoOriginal = fechaVista;
+      const fecha = new Date(formatoOriginal * 1000);
+      commit("formatoDeFecha", fecha);
+    },*/
     consultaApi({ commit }) {
       const actApi = async () => {
         try {

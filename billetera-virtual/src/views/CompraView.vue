@@ -25,6 +25,7 @@
 import { mapGetters, mapActions } from "vuex";
 import { useStore } from "vuex";
 import { computed } from "vue";
+import eventService from "@/services/EventService";
 export default {
   setup() {
     const store = useStore();
@@ -51,18 +52,18 @@ export default {
   },
   created() {
     this.monedas = this.$route.params.moneda;
-    console.log(
+    /*console.log(
       "Viendo DATOS:",
       this.$route.params.moneda,
       this.monedas,
       this.datosCompra[this.monedas]
-    );
+    );*/
   },
   mounted() {
     this.consultarApi();
   },
   methods: {
-    ...mapActions(["consultaApi"]),
+    ...mapActions(["consultaApi", "dandoFormatoFecha"]),
     async consultarApi() {
       await this.consultaApi();
       console.log("Datos actualizados:", this.datosCompra);
@@ -70,15 +71,24 @@ export default {
     Confirmar() {
       if (this.validarCant()) {
         console.log(this.cantComprada());
-        const data = {
+        const infoCompra = {
           user_id: this.usuario.id,
           action: "purchase",
           crypto_code: this.monedas,
           crypto_amount: this.cantidad,
           money: this.cantComprada(),
-          datetime: this.datosCompra[this.monedas].ask,
+          datetime: this.darFomatoFecha(),
         };
-        console.log("data", data);
+        console.log("data", infoCompra);
+        eventService
+          .compra(infoCompra)
+          .then((response) => {
+            console.log("Respuesta de la api: ", response.data);
+          })
+          .catch((error) => {
+            console.error("Error de la api: ", error);
+          });
+        //console.log("data", infoCompra);
       } else {
         alert("Ingrese un dato valido.");
       }
@@ -93,6 +103,16 @@ export default {
       const precioUnidad = this.datosCompra[this.monedas].ask;
       const precioAPagar = precioUnidad * this.cantidad;
       return precioAPagar;
+    },
+    darFomatoFecha() {
+      const nuevaFecha = new Date(this.datosCompra[this.monedas].time * 1000);
+      const dia = nuevaFecha.getDate().toString().padStart(2, "0");
+      const mes = (nuevaFecha.getMonth() + 1).toString().padStart(2, "0");
+      const año = nuevaFecha.getFullYear();
+      const hora = nuevaFecha.getHours().toString().padStart(2, "0");
+      const minutos = nuevaFecha.getMinutes().toString().padStart(2, "0");
+      const formatoFecha = `${dia}-${mes}-${año} ${hora}:${minutos}`;
+      return formatoFecha;
     },
   },
 };
