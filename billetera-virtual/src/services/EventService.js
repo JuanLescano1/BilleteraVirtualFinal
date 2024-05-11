@@ -20,7 +20,7 @@ export default {
   argenBTC(moneda) {
     return api.get(`/argenbtc/${moneda}/ars`);
   },
-  compra() {
-    return apiClient.post("/transactions");
+  compra(infoCompra) {
+    return apiClient.post("/transactions", infoCompra);
   },
 };

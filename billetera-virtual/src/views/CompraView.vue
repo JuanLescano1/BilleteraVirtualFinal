@@ -52,12 +52,12 @@ export default {
   },
   created() {
     this.monedas = this.$route.params.moneda;
-    console.log(
+    /*console.log(
       "Viendo DATOS:",
       this.$route.params.moneda,
       this.monedas,
       this.datosCompra[this.monedas]
-    );
+    );*/
   },
   mounted() {
     this.consultarApi();
@@ -104,7 +104,16 @@ export default {
       const precioAPagar = precioUnidad * this.cantidad;
       return precioAPagar;
     },
-    darFomatoFecha() {},
+    darFomatoFecha() {
+      const nuevaFecha = new Date(this.datosCompra[this.monedas].time * 1000);
+      const dia = nuevaFecha.getDate().toString().padStart(2, "0");
+      const mes = (nuevaFecha.getMonth() + 1).toString().padStart(2, "0");
+      const año = nuevaFecha.getFullYear();
+      const hora = nuevaFecha.getHours().toString().padStart(2, "0");
+      const minutos = nuevaFecha.getMinutes().toString().padStart(2, "0");
+      const formatoFecha = `${dia}-${mes}-${año} ${hora}:${minutos}`;
+      return formatoFecha;
+    },
   },
 };
 </script>
