@@ -4,10 +4,10 @@
       <router-link v-if="!usuarioAutenticado" to="/">Inicio |</router-link>
       <router-link v-if="!usuarioAutenticado" to="/about">Info</router-link>
       <router-link v-if="usuarioAutenticado" to="/crypto">
-        Monedas |
+        Monedas|
       </router-link>
-      <router-link v-if="usuarioAutenticado" to="/">Venta</router-link> |
-      <router-link v-if="usuarioAutenticado" to="/">Historial</router-link> |
+      <router-link v-if="usuarioAutenticado" to="/">Venta|</router-link>
+      <router-link v-if="usuarioAutenticado" to="/">Historial|</router-link>
       <router-link v-if="usuarioAutenticado" to="/usuario">
         Usuario
       </router-link>
