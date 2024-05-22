@@ -63,12 +63,15 @@ export default {
     this.consultarApi();
   },
   methods: {
-    ...mapActions(["consultaApi", "dandoFormatoFecha"]),
+    ...mapActions(["consultaApi", "darFomatoFecha"]),
     async consultarApi() {
       await this.consultaApi();
       console.log("Datos actualizados:", this.datosCompra);
     },
-    Confirmar() {
+    async Confirmar() {
+      const fecha = await this.datosCompra[this.monedas].time;
+      const fechaFormateada = await this.darFomatoFecha(fecha);
+      console.log("fecha formateada", fechaFormateada);
       if (this.validarCant()) {
         console.log(this.cantComprada());
         const infoCompra = {
@@ -77,7 +80,7 @@ export default {
           crypto_code: this.monedas,
           crypto_amount: this.cantidad,
           money: this.cantComprada(),
-          datetime: this.darFomatoFecha(),
+          datetime: fechaFormateada,
         };
         console.log("data", infoCompra);
         eventService
@@ -104,7 +107,7 @@ export default {
       const precioAPagar = precioUnidad * this.cantidad;
       return precioAPagar;
     },
-    darFomatoFecha() {
+    /*darFomatoFecha() {
       const nuevaFecha = new Date(this.datosCompra[this.monedas].time * 1000);
       const dia = nuevaFecha.getDate().toString().padStart(2, "0");
       const mes = (nuevaFecha.getMonth() + 1).toString().padStart(2, "0");
@@ -113,7 +116,7 @@ export default {
       const minutos = nuevaFecha.getMinutes().toString().padStart(2, "0");
       const formatoFecha = `${dia}-${mes}-${año} ${hora}:${minutos}`;
       return formatoFecha;
-    },
+    },*/
   },
 };
 </script>

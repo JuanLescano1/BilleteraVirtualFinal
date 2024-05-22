@@ -99,6 +99,17 @@ export default createStore({
       //console.log("Guardando datos de compra:", moneda, data);
       commit("guardarDatosCompra", { moneda, data });
     },
+    async darFomatoFecha(_, fecha) {
+      const nuevaFecha = new Date(fecha * 1000);
+      const dia = nuevaFecha.getDate().toString().padStart(2, "0");
+      const mes = (nuevaFecha.getMonth() + 1).toString().padStart(2, "0");
+      const año = nuevaFecha.getFullYear();
+      const hora = nuevaFecha.getHours().toString().padStart(2, "0");
+      const minutos = nuevaFecha.getMinutes().toString().padStart(2, "0");
+      const formatoFecha = `${dia}-${mes}-${año} ${hora}:${minutos}`;
+      console.log("fecha compra: ", formatoFecha);
+      return formatoFecha;
+    },
     /*dandoFormatoFecha({ commit }, fechaVista) {
       const formatoOriginal = fechaVista;
       const fecha = new Date(formatoOriginal * 1000);
