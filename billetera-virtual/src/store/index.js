@@ -154,7 +154,7 @@ export default createStore({
             const formatoFechaBTC = await dispatch("darFomatoFecha", btcTiempo);
             responseBTC.time = formatoFechaBTC;
             commit("actArgentBTCData", { moneda, data: responseBTC });
-            console.log("responseBTC", responseBTC);
+            console.log("responseBTCs", responseBTC);
           }
           console.log(adaData);
           console.log(responseAvax);
