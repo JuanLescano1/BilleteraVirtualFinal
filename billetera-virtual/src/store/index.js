@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
 import eventService from "@/services/EventService.js";
+import moment from "moment";
 
 export default createStore({
   state: {
@@ -100,6 +101,14 @@ export default createStore({
       commit("guardarDatosCompra", { moneda, data });
     },
     async darFomatoFecha(_, tiempo) {
+      const nuevaFecha = moment
+        .unix(tiempo)
+        .local()
+        .format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+      console.log("Fecha compra (ISO 8601 con horario local):", nuevaFecha);
+      return nuevaFecha;
+    },
+    /*async darFomatoFecha(_, tiempo) {
       const nuevaFecha = new Date(tiempo * 1000);
       const dia = nuevaFecha.getDate().toString().padStart(2, "0");
       const mes = (nuevaFecha.getMonth() + 1).toString().padStart(2, "0");
@@ -109,7 +118,7 @@ export default createStore({
       const formatoFecha = `${dia}-${mes}-${año} ${hora}:${minutos}`.toString();
       console.log("fecha compra: ", formatoFecha);
       return formatoFecha;
-    },
+    },*/
     /*dandoFormatoFecha({ commit }, fechaVista) {
       const formatoOriginal = fechaVista;
       const fecha = new Date(formatoOriginal * 1000);
@@ -141,6 +150,9 @@ export default createStore({
           console.log("Avax", responseAvax);
           for (const moneda of this.state.listaArgentBTC) {
             const responseBTC = (await eventService.argenBTC(moneda)).data;
+            const btcTiempo = responseBTC.time;
+            const formatoFechaBTC = await dispatch("darFomatoFecha", btcTiempo);
+            responseBTC.time = formatoFechaBTC;
             commit("actArgentBTCData", { moneda, data: responseBTC });
             console.log("responseBTC", responseBTC);
           }
