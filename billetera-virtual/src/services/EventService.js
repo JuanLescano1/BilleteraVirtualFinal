@@ -21,6 +21,7 @@ export default {
     return api.get(`/argenbtc/${moneda}/ars`);
   },
   compra(infoCompra) {
+    console.log("Datos enviados a la API:", infoCompra);
     return apiClient.post("/transactions", infoCompra);
   },
 };

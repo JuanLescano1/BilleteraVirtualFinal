@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
 import eventService from "@/services/EventService.js";
+import moment from "moment";
 
 export default createStore({
   state: {
@@ -99,40 +100,63 @@ export default createStore({
       //console.log("Guardando datos de compra:", moneda, data);
       commit("guardarDatosCompra", { moneda, data });
     },
-    async darFomatoFecha(_, fecha) {
-      const nuevaFecha = new Date(fecha * 1000);
+    async darFomatoFecha(_, tiempo) {
+      const nuevaFecha = moment
+        .unix(tiempo)
+        .local()
+        .format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+      console.log("Fecha compra (ISO 8601 con horario local):", nuevaFecha);
+      return nuevaFecha;
+    },
+    /*async darFomatoFecha(_, tiempo) {
+      const nuevaFecha = new Date(tiempo * 1000);
       const dia = nuevaFecha.getDate().toString().padStart(2, "0");
       const mes = (nuevaFecha.getMonth() + 1).toString().padStart(2, "0");
       const año = nuevaFecha.getFullYear();
       const hora = nuevaFecha.getHours().toString().padStart(2, "0");
       const minutos = nuevaFecha.getMinutes().toString().padStart(2, "0");
-      const formatoFecha = `${dia}-${mes}-${año} ${hora}:${minutos}`;
+      const formatoFecha = `${dia}-${mes}-${año} ${hora}:${minutos}`.toString();
       console.log("fecha compra: ", formatoFecha);
       return formatoFecha;
-    },
+    },*/
     /*dandoFormatoFecha({ commit }, fechaVista) {
       const formatoOriginal = fechaVista;
       const fecha = new Date(formatoOriginal * 1000);
       commit("formatoDeFecha", fecha);
     },*/
-    consultaApi({ commit }) {
+    consultaApi({ commit, dispatch }) {
       const actApi = async () => {
         try {
           const responseNuars = (await eventService.argenNuars()).data;
+          const nuarsTiempo = responseNuars.time;
+          const formatoFechaNuars = await dispatch(
+            "darFomatoFecha",
+            nuarsTiempo
+          );
+          responseNuars.time = formatoFechaNuars;
           commit("actNuarsData", responseNuars);
           const adaData = (await eventService.argenAda()).data;
+          const adaTiempo = adaData.time;
+          const formatoFechaAda = await dispatch("darFomatoFecha", adaTiempo);
+          adaData.time = formatoFechaAda;
           commit("actAdaData", adaData);
           const responseAvax = (await eventService.argenAvax()).data;
+          const avaxTiempo = responseAvax.time;
+          const formatoFechaAvax = await dispatch("darFomatoFecha", avaxTiempo);
+          responseAvax.time = formatoFechaAvax;
           commit("actAvaxData", responseAvax);
           console.log("ArgenAda", adaData);
           console.log("Nuars", responseNuars);
           console.log("Avax", responseAvax);
           for (const moneda of this.state.listaArgentBTC) {
             const responseBTC = (await eventService.argenBTC(moneda)).data;
+            const btcTiempo = responseBTC.time;
+            const formatoFechaBTC = await dispatch("darFomatoFecha", btcTiempo);
+            responseBTC.time = formatoFechaBTC;
             commit("actArgentBTCData", { moneda, data: responseBTC });
             console.log("responseBTC", responseBTC);
           }
-          console.log(this.adaData);
+          console.log(adaData);
           console.log(responseAvax);
           commit("actCarga", false);
         } catch (error) {

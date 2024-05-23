@@ -63,30 +63,31 @@ export default {
     this.consultarApi();
   },
   methods: {
-    ...mapActions(["consultaApi", "darFomatoFecha"]),
+    ...mapActions(["consultaApi"]),
     async consultarApi() {
       await this.consultaApi();
       console.log("Datos actualizados:", this.datosCompra);
     },
     async Confirmar() {
-      const fecha = await this.datosCompra[this.monedas].time;
-      const fechaFormateada = await this.darFomatoFecha(fecha);
-      console.log("fecha formateada", fechaFormateada);
       if (this.validarCant()) {
         console.log(this.cantComprada());
+        console.log("Fecha comprada dsa", this.datosCompra[this.monedas].time);
+        const fecha = this.datosCompra[this.monedas].time;
         const infoCompra = {
           user_id: this.usuario.id,
           action: "purchase",
           crypto_code: this.monedas,
           crypto_amount: this.cantidad,
           money: this.cantComprada(),
-          datetime: fechaFormateada,
+          datetime: fecha,
         };
         console.log("data", infoCompra);
+        console.log("dsadad", fecha);
         eventService
           .compra(infoCompra)
           .then((response) => {
             console.log("Respuesta de la api: ", response.data);
+            console.log("Fecha respuesta api", response.data.datetime);
           })
           .catch((error) => {
             console.error("Error de la api: ", error);
