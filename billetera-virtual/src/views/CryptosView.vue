@@ -1,71 +1,89 @@
 <template>
-  <div>
-    <img src="@\components\Imagenes\FondoInicioSesion.jpg" id="fondoLista" />
-    <h1 v-if="error">No se puedieron cargar los datos obtenidos de la API</h1>
-    <div v-if="!carga && !error">
-      <button
-        @click="
-          buenBit = true;
-          argenBTC = false;
-        "
-        class="botonExchange"
-      >
-        BuenBit
-      </button>
-      <button
-        @click="
-          buenBit = false;
-          argenBTC = true;
-        "
-        class="botonExchange"
-      >
-        argentBTC
-      </button>
-      <div v-if="buenBit">
-        <h1>buenBit</h1>
-        <h2>nuARS</h2>
-        <button @click="mostrarDetalles('nuars')">Ver detalles</button>
-        <div v-if="detalles === 'nuars'">
-          <p>Precio: {{ nuarsData.ask }}</p>
-          <p>Precio con comisiones: {{ nuarsData.totalAsk }}</p>
-          <p>Venta: {{ nuarsData.bid }}</p>
-          <p>Venta con comisiones: {{ nuarsData.totalBid }}</p>
-          <p>Tiempo actualizacion: {{ nuarsData.time }}</p>
-          <button @click="comprar(detalles, nuarsData)">Comprar</button>
-        </div>
-        <h2>ADA</h2>
-        <button @click="mostrarDetalles('ada')">Ver detalles</button>
-        <div v-if="detalles === 'ada'">
-          <p>Precio: {{ adaData.ask }}</p>
-          <p>Precio con comisiones: {{ adaData.totalAsk }}</p>
-          <p>Venta: {{ adaData.bid }}</p>
-          <p>Venta con comisiones: {{ adaData.totalBid }}</p>
-          <p>Tiempo actualizacion: {{ adaData.time }}</p>
-          <button @click="comprar(detalles, adaData)">Comprar</button>
-        </div>
-        <h2>AVAX</h2>
-        <button @click="mostrarDetalles('avax')">Ver detalles</button>
-        <div v-if="detalles === 'avax'">
-          <p>Precio: {{ avaxData.ask }}</p>
-          <p>Precio con comisiones: {{ avaxData.totalAsk }}</p>
-          <p>Venta: {{ avaxData.bid }}</p>
-          <p>Venta con comisiones: {{ avaxData.totalBid }}</p>
-          <p>Tiempo actualizacion: {{ avaxData.time }}</p>
-          <button @click="comprar(detalles, avaxData)">Comprar</button>
-        </div>
-      </div>
-      <div v-if="argenBTC">
-        <h1>argenBTC</h1>
-        <div v-for="(data, moneda) in argentBTCData" :key="moneda">
-          <h2>{{ moneda }}</h2>
-          <button @click="mostrarDetalles(moneda, data)">Ver detalles</button>
-          <div v-if="detalles === moneda">
-            <p>Precio: {{ data.ask }}</p>
-            <p>Precio con comisiones: {{ data.totalAsk }}</p>
-            <p>Venta: {{ data.bid }}</p>
-            <p>Venta con comisiones: {{ data.totalBid }}</p>
-            <p>Tiempo actualizacion: {{ data.time }}</p>
-            <button @click="comprar(moneda, data)">Comprar</button>
+  <div id="app">
+    <div id="fondoImagen">
+      <img src="@\components\Imagenes\FondoInicioSesion.jpg" id="fondoLista" />
+      <div class="contenedor-Principal">
+        <h1 v-if="error">
+          No se puedieron cargar los datos obtenidos de la API
+        </h1>
+        <div v-if="!carga && !error">
+          <button
+            @click="
+              buenBit = true;
+              argenBTC = false;
+            "
+            class="botonExchange"
+          >
+            BuenBit
+          </button>
+          <button
+            @click="
+              buenBit = false;
+              argenBTC = true;
+            "
+            class="botonExchange"
+          >
+            argentBTC
+          </button>
+          <div v-if="buenBit">
+            <h1>buenBit</h1>
+            <div class="contenedor-Monedas">
+              <div class="monedas">
+                <h2>nuARS</h2>
+                <button @click="mostrarDetalles('nuars')">Ver detalles</button>
+              </div>
+              <div v-if="detalles === 'nuars'">
+                <p>Precio: {{ nuarsData.ask }}</p>
+                <p>Precio con comisiones: {{ nuarsData.totalAsk }}</p>
+                <p>Venta: {{ nuarsData.bid }}</p>
+                <p>Venta con comisiones: {{ nuarsData.totalBid }}</p>
+                <p>Tiempo actualizacion: {{ nuarsData.time }}</p>
+                <button @click="comprar(detalles, nuarsData)">Comprar</button>
+              </div>
+              <div class="monedas">
+                <h2>ADA</h2>
+                <button @click="mostrarDetalles('ada')">Ver detalles</button>
+              </div>
+              <div v-if="detalles === 'ada'">
+                <p>Precio: {{ adaData.ask }}</p>
+                <p>Precio con comisiones: {{ adaData.totalAsk }}</p>
+                <p>Venta: {{ adaData.bid }}</p>
+                <p>Venta con comisiones: {{ adaData.totalBid }}</p>
+                <p>Tiempo actualizacion: {{ adaData.time }}</p>
+                <button @click="comprar(detalles, adaData)">Comprar</button>
+              </div>
+              <div class="monedas">
+                <h2>AVAX</h2>
+                <button @click="mostrarDetalles('avax')">Ver detalles</button>
+              </div>
+              <div v-if="detalles === 'avax'">
+                <p>Precio: {{ avaxData.ask }}</p>
+                <p>Precio con comisiones: {{ avaxData.totalAsk }}</p>
+                <p>Venta: {{ avaxData.bid }}</p>
+                <p>Venta con comisiones: {{ avaxData.totalBid }}</p>
+                <p>Tiempo actualizacion: {{ avaxData.time }}</p>
+                <button @click="comprar(detalles, avaxData)">Comprar</button>
+              </div>
+            </div>
+          </div>
+          <div v-if="argenBTC">
+            <h1>argenBTC</h1>
+            <div class="contenedor-Monedas">
+              <div v-for="(data, moneda) in argentBTCData" :key="moneda">
+                <h2>{{ moneda }}</h2>
+                <button @click="mostrarDetalles(moneda, data)">
+                  Ver detalles
+                </button>
+                <div v-if="detalles === moneda">
+                  <p>Precio: {{ data.ask }}</p>
+                  <p>Precio con comisiones: {{ data.totalAsk }}</p>
+                  <p>Venta: {{ data.bid }}</p>
+                  <p>Venta con comisiones: {{ data.totalBid }}</p>
+                  <p>Tiempo actualizacion: {{ data.time }}</p>
+                  <button @click="comprar(moneda, data)">Comprar</button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -153,6 +171,10 @@ export default {
 };*/
 </script>
 <style>
+#app1 {
+  height: 100vh;
+  overflow: hidden;
+}
 #fondoLista {
   width: 100%;
   height: 100%;
@@ -161,6 +183,20 @@ export default {
   z-index: -1;
   top: 0;
   left: 0;
+}
+#fondoImagen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.contenedor-Principal {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  overflow-y: auto;
 }
 .botonExchange {
   border-style: hidden;
@@ -189,5 +225,17 @@ export default {
 }
 .botonExchange:hover::after {
   opacity: 0;
+}
+.contenedor-Monedas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.monedas {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 30%;
+  margin-right: 30%;
 }
 </style>
