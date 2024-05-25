@@ -1,5 +1,6 @@
 <template>
   <div>
+    <img src="@\components\Imagenes\FondoInicioSesion.jpg" id="fondoLista" />
     <h1 v-if="error">No se puedieron cargar los datos obtenidos de la API</h1>
     <div v-if="!carga && !error">
       <button
@@ -7,6 +8,7 @@
           buenBit = true;
           argenBTC = false;
         "
+        class="botonExchange"
       >
         BuenBit
       </button>
@@ -15,10 +17,12 @@
           buenBit = false;
           argenBTC = true;
         "
+        class="botonExchange"
       >
         argentBTC
       </button>
       <div v-if="buenBit">
+        <h1>buenBit</h1>
         <h2>nuARS</h2>
         <button @click="mostrarDetalles('nuars')">Ver detalles</button>
         <div v-if="detalles === 'nuars'">
@@ -51,6 +55,7 @@
         </div>
       </div>
       <div v-if="argenBTC">
+        <h1>argenBTC</h1>
         <div v-for="(data, moneda) in argentBTCData" :key="moneda">
           <h2>{{ moneda }}</h2>
           <button @click="mostrarDetalles(moneda, data)">Ver detalles</button>
@@ -147,4 +152,42 @@ export default {
   },
 };*/
 </script>
-<style></style>
+<style>
+#fondoLista {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+}
+.botonExchange {
+  border-style: hidden;
+  border-radius: 10px;
+  margin: 5px;
+  width: 30%;
+  height: 50px;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+}
+.botonExchange::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 2px groove;
+  border-radius: 10px;
+  transition: opacity 0.3s ease;
+  border-color: rgb(195, 37, 209);
+}
+.botonExchange:hover::after {
+  opacity: 0;
+}
+</style>
