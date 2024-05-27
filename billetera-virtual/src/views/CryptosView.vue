@@ -4,43 +4,52 @@
       <img src="@\components\Imagenes\FondoInicioSesion.jpg" id="fondoLista" />
       <div class="contenedor-Principal">
         <h1 v-if="error">
-          No se puedieron cargar los datos obtenidos de la API
+          No se pudieron cargar los datos obtenidos de la API
         </h1>
         <div v-if="!carga && !error">
-          <button
-            @click="
-              buenBit = true;
-              argenBTC = false;
-            "
-            class="botonExchange"
-          >
-            BuenBit
-          </button>
-          <button
-            @click="
-              buenBit = false;
-              argenBTC = true;
-            "
-            class="botonExchange"
-          >
-            argentBTC
-          </button>
-          <div v-if="buenBit">
-            <h1>buenBit</h1>
-            <div class="contenedor-Monedas">
-              <div class="monedas">
-                <h2>nuARS</h2>
-                <button @click="mostrarDetalles('nuars')">Ver detalles</button>
+          <div class="botones">
+            <button
+              @click="
+                buenBit = true;
+                argenBTC = false;
+              "
+              class="botonExchange"
+            >
+              BuenBit
+            </button>
+            <button
+              @click="
+                buenBit = false;
+                argenBTC = true;
+              "
+              class="botonExchange"
+            >
+              argentBTC
+            </button>
+          </div>
+          <div class="titulo">
+            <h1 v-if="buenBit">buenBit</h1>
+            <h1 v-if="argenBTC">argenBTC</h1>
+          </div>
+          <div class="contenedor-Secundario">
+            <div v-if="buenBit">
+              <div>
+                <div>
+                  <h2>nuARS</h2>
+                  <button @click="mostrarDetalles('nuars')">
+                    Ver detalles
+                  </button>
+                </div>
+                <div v-if="detalles === 'nuars'">
+                  <p>Precio: {{ nuarsData.ask }}</p>
+                  <p>Precio con comisiones: {{ nuarsData.totalAsk }}</p>
+                  <p>Venta: {{ nuarsData.bid }}</p>
+                  <p>Venta con comisiones: {{ nuarsData.totalBid }}</p>
+                  <p>Tiempo actualizacion: {{ nuarsData.time }}</p>
+                  <button @click="comprar(detalles, nuarsData)">Comprar</button>
+                </div>
               </div>
-              <div v-if="detalles === 'nuars'">
-                <p>Precio: {{ nuarsData.ask }}</p>
-                <p>Precio con comisiones: {{ nuarsData.totalAsk }}</p>
-                <p>Venta: {{ nuarsData.bid }}</p>
-                <p>Venta con comisiones: {{ nuarsData.totalBid }}</p>
-                <p>Tiempo actualizacion: {{ nuarsData.time }}</p>
-                <button @click="comprar(detalles, nuarsData)">Comprar</button>
-              </div>
-              <div class="monedas">
+              <div>
                 <h2>ADA</h2>
                 <button @click="mostrarDetalles('ada')">Ver detalles</button>
               </div>
@@ -52,7 +61,7 @@
                 <p>Tiempo actualizacion: {{ adaData.time }}</p>
                 <button @click="comprar(detalles, adaData)">Comprar</button>
               </div>
-              <div class="monedas">
+              <div>
                 <h2>AVAX</h2>
                 <button @click="mostrarDetalles('avax')">Ver detalles</button>
               </div>
@@ -65,22 +74,23 @@
                 <button @click="comprar(detalles, avaxData)">Comprar</button>
               </div>
             </div>
-          </div>
-          <div v-if="argenBTC">
-            <h1>argenBTC</h1>
-            <div class="contenedor-Monedas">
-              <div v-for="(data, moneda) in argentBTCData" :key="moneda">
-                <h2>{{ moneda }}</h2>
-                <button @click="mostrarDetalles(moneda, data)">
-                  Ver detalles
-                </button>
-                <div v-if="detalles === moneda">
-                  <p>Precio: {{ data.ask }}</p>
-                  <p>Precio con comisiones: {{ data.totalAsk }}</p>
-                  <p>Venta: {{ data.bid }}</p>
-                  <p>Venta con comisiones: {{ data.totalBid }}</p>
-                  <p>Tiempo actualizacion: {{ data.time }}</p>
-                  <button @click="comprar(moneda, data)">Comprar</button>
+            <div v-if="argenBTC">
+              <div>
+                <div v-for="(data, moneda) in argentBTCData" :key="moneda">
+                  <div>
+                    <h2>{{ moneda }}</h2>
+                    <button @click="mostrarDetalles(moneda, data)">
+                      Ver detalles
+                    </button>
+                  </div>
+                  <div v-if="detalles === moneda">
+                    <p>Precio: {{ data.ask }}</p>
+                    <p>Precio con comisiones: {{ data.totalAsk }}</p>
+                    <p>Venta: {{ data.bid }}</p>
+                    <p>Venta con comisiones: {{ data.totalBid }}</p>
+                    <p>Tiempo actualizacion: {{ data.time }}</p>
+                    <button @click="comprar(moneda, data)">Comprar</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -171,10 +181,6 @@ export default {
 };*/
 </script>
 <style>
-#app1 {
-  height: 100vh;
-  overflow: hidden;
-}
 #fondoLista {
   width: 100%;
   height: 100%;
@@ -197,6 +203,21 @@ export default {
   z-index: 1;
   height: 100%;
   overflow-y: auto;
+  align-content: center;
+}
+.contenedor-Secundario {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 140px;
+}
+.botones {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  position: fixed;
+  top: 10%;
+  width: 100%;
+  z-index: 2;
 }
 .botonExchange {
   border-style: hidden;
@@ -226,16 +247,12 @@ export default {
 .botonExchange:hover::after {
   opacity: 0;
 }
-.contenedor-Monedas {
+.titulo {
+  position: fixed;
+  top: 30%;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.monedas {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-left: 30%;
-  margin-right: 30%;
+  justify-content: center;
+  z-index: 1;
 }
 </style>
