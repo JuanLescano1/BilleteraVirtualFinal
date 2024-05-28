@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app1">
     <div id="fondoImagen">
       <img src="@\components\Imagenes\FondoInicioSesion.jpg" id="fondoLista" />
       <div class="contenedor-Principal">
@@ -205,6 +205,7 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  background: linear-gradient(135deg, #000008, #531466);
 }
 .contenedor-Principal {
   position: relative;
@@ -224,6 +225,10 @@ export default {
   border-radius: 10px;
   margin-left: 5%;
   bottom: 5%;
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 10px;
 }
 .contenedor-verDetalles {
   display: grid;
@@ -248,12 +253,12 @@ export default {
 .detalles {
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.6);
   width: 40%;
   margin: 0 auto;
   align-items: center;
   border-radius: 10px;
-  color: white;
+  color: rgb(255, 255, 255);
   margin-bottom: 1%;
 }
 .detalles button {
@@ -281,6 +286,7 @@ export default {
   display: inline-block;
   overflow: hidden;
   position: relative;
+  color: white;
 }
 .botonExchange::after {
   content: "";
@@ -305,5 +311,8 @@ export default {
   justify-content: center;
   z-index: 1;
   height: 10%;
+  color: rgb(255, 255, 255);
+  text-shadow: 0 5px 10px black;
+  -webkit-text-stroke: 1px rgb(110, 16, 95);
 }
 </style>
