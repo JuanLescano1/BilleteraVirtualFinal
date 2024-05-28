@@ -33,14 +33,14 @@
           </div>
           <div class="contenedor-Secundario">
             <div v-if="buenBit">
-              <div>
-                <div>
+              <div class="contenedor-Terciario">
+                <div class="contenedor-verDetalles">
                   <h2>nuARS</h2>
                   <button @click="mostrarDetalles('nuars')">
                     Ver detalles
                   </button>
                 </div>
-                <div v-if="detalles === 'nuars'">
+                <div v-if="detalles === 'nuars'" class="detalles">
                   <p>Precio: {{ nuarsData.ask }}</p>
                   <p>Precio con comisiones: {{ nuarsData.totalAsk }}</p>
                   <p>Venta: {{ nuarsData.bid }}</p>
@@ -49,41 +49,49 @@
                   <button @click="comprar(detalles, nuarsData)">Comprar</button>
                 </div>
               </div>
-              <div>
-                <h2>ADA</h2>
-                <button @click="mostrarDetalles('ada')">Ver detalles</button>
+              <div class="contenedor-Terciario">
+                <div class="contenedor-verDetalles">
+                  <h2>ADA</h2>
+                  <button @click="mostrarDetalles('ada')">Ver detalles</button>
+                </div>
+                <div v-if="detalles === 'ada'" class="detalles">
+                  <p>Precio: {{ adaData.ask }}</p>
+                  <p>Precio con comisiones: {{ adaData.totalAsk }}</p>
+                  <p>Venta: {{ adaData.bid }}</p>
+                  <p>Venta con comisiones: {{ adaData.totalBid }}</p>
+                  <p>Tiempo actualizacion: {{ adaData.time }}</p>
+                  <button @click="comprar(detalles, adaData)">Comprar</button>
+                </div>
               </div>
-              <div v-if="detalles === 'ada'">
-                <p>Precio: {{ adaData.ask }}</p>
-                <p>Precio con comisiones: {{ adaData.totalAsk }}</p>
-                <p>Venta: {{ adaData.bid }}</p>
-                <p>Venta con comisiones: {{ adaData.totalBid }}</p>
-                <p>Tiempo actualizacion: {{ adaData.time }}</p>
-                <button @click="comprar(detalles, adaData)">Comprar</button>
-              </div>
-              <div>
-                <h2>AVAX</h2>
-                <button @click="mostrarDetalles('avax')">Ver detalles</button>
-              </div>
-              <div v-if="detalles === 'avax'">
-                <p>Precio: {{ avaxData.ask }}</p>
-                <p>Precio con comisiones: {{ avaxData.totalAsk }}</p>
-                <p>Venta: {{ avaxData.bid }}</p>
-                <p>Venta con comisiones: {{ avaxData.totalBid }}</p>
-                <p>Tiempo actualizacion: {{ avaxData.time }}</p>
-                <button @click="comprar(detalles, avaxData)">Comprar</button>
+              <div class="contenedor-Terciario">
+                <div class="contenedor-verDetalles">
+                  <h2>AVAX</h2>
+                  <button @click="mostrarDetalles('avax')">Ver detalles</button>
+                </div>
+                <div v-if="detalles === 'avax'" class="detalles">
+                  <p>Precio: {{ avaxData.ask }}</p>
+                  <p>Precio con comisiones: {{ avaxData.totalAsk }}</p>
+                  <p>Venta: {{ avaxData.bid }}</p>
+                  <p>Venta con comisiones: {{ avaxData.totalBid }}</p>
+                  <p>Tiempo actualizacion: {{ avaxData.time }}</p>
+                  <button @click="comprar(detalles, avaxData)">Comprar</button>
+                </div>
               </div>
             </div>
             <div v-if="argenBTC">
               <div>
-                <div v-for="(data, moneda) in argentBTCData" :key="moneda">
-                  <div>
+                <div
+                  v-for="(data, moneda) in argentBTCData"
+                  :key="moneda"
+                  class="contenedor-Terciario"
+                >
+                  <div class="contenedor-verDetalles">
                     <h2>{{ moneda }}</h2>
                     <button @click="mostrarDetalles(moneda, data)">
                       Ver detalles
                     </button>
                   </div>
-                  <div v-if="detalles === moneda">
+                  <div v-if="detalles === moneda" class="detalles">
                     <p>Precio: {{ data.ask }}</p>
                     <p>Precio con comisiones: {{ data.totalAsk }}</p>
                     <p>Venta: {{ data.bid }}</p>
@@ -206,9 +214,50 @@ export default {
   align-content: center;
 }
 .contenedor-Secundario {
-  flex: 1;
   overflow-y: auto;
-  margin-top: 140px;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  position: absolute;
+  width: 90%;
+  height: 50%;
+  border-style: solid;
+  border-radius: 10px;
+  margin-left: 5%;
+  bottom: 5%;
+}
+.contenedor-verDetalles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+  position: relative;
+}
+.contenedor-verDetalles button {
+  grid-column: 2;
+  width: 200px;
+  height: 50%;
+  justify-self: center;
+  align-self: center;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.contenedor-verDetalles h2 {
+  grid-column: 1;
+  align-self: center;
+}
+.detalles {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
+  width: 40%;
+  margin: 0 auto;
+  align-items: center;
+  border-radius: 10px;
+  color: white;
+  margin-bottom: 1%;
+}
+.detalles button {
+  margin-bottom: 16px;
 }
 .botones {
   display: flex;
@@ -218,6 +267,7 @@ export default {
   top: 10%;
   width: 100%;
   z-index: 2;
+  height: 20%;
 }
 .botonExchange {
   border-style: hidden;
@@ -254,5 +304,6 @@ export default {
   display: flex;
   justify-content: center;
   z-index: 1;
+  height: 10%;
 }
 </style>
