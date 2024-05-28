@@ -38,6 +38,7 @@ nav {
   display: flex;
   justify-content: right;
   position: relative;
+  z-index: 10;
 }
 
 nav a {

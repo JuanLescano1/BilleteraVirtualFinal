@@ -1,10 +1,10 @@
 <template>
-  <div id="background">
+  <div id="aa">
     <div id="sd">
-      <h1>ds:{{ usuario.id }}</h1>
+      <h1>Usuario: {{ usuario.id }}</h1>
       <button @click="cerrarSesion">Cerrar sesión</button>
-      <p v-if="!autenticado">Usuario no autenticado</p>
-      <p v-else>Usuario autenticado</p>
+      <h3 v-if="!autenticado">Usuario no autenticado</h3>
+      <h4 v-else>Usuario autenticado</h4>
     </div>
   </div>
 </template>
@@ -38,12 +38,22 @@ export default {
 </script>
 
 <style>
-#background {
-  background-size: cover;
-  background-repeat: no-repeat;
+#aa {
+  background: linear-gradient(135deg, #000008, #531466);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
 }
 #sd {
   display: flex;
   width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 }
 </style>
