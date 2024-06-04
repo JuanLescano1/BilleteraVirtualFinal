@@ -1,5 +1,5 @@
 <template>
-  <div id="app1">
+  <div>
     <div id="fondoImagen">
       <img src="@\components\Imagenes\FondoInicioSesion.jpg" id="fondoLista" />
       <div class="contenedor-Principal">
@@ -34,11 +34,12 @@
           <div class="contenedor-Secundario">
             <div v-if="buenBit">
               <div class="contenedor-Terciario">
-                <div class="contenedor-verDetalles">
+                <div
+                  class="contenedor-verDetalles"
+                  @click="mostrarDetalles('nuars')"
+                >
                   <h2>nuARS</h2>
-                  <button @click="mostrarDetalles('nuars')">
-                    Ver detalles
-                  </button>
+                  <h3>Ver detalles</h3>
                 </div>
                 <div v-if="detalles === 'nuars'" class="detalles">
                   <p>Precio: {{ nuarsData.ask }}</p>
@@ -46,13 +47,21 @@
                   <p>Venta: {{ nuarsData.bid }}</p>
                   <p>Venta con comisiones: {{ nuarsData.totalBid }}</p>
                   <p>Tiempo actualizacion: {{ nuarsData.time }}</p>
-                  <button @click="comprar(detalles, nuarsData)">Comprar</button>
+                  <button
+                    @click="comprar(detalles, nuarsData)"
+                    class="btnCompra"
+                  >
+                    Comprar
+                  </button>
                 </div>
               </div>
               <div class="contenedor-Terciario">
-                <div class="contenedor-verDetalles">
+                <div
+                  class="contenedor-verDetalles"
+                  @click="mostrarDetalles('ada')"
+                >
                   <h2>ADA</h2>
-                  <button @click="mostrarDetalles('ada')">Ver detalles</button>
+                  <h3>Ver detalles</h3>
                 </div>
                 <div v-if="detalles === 'ada'" class="detalles">
                   <p>Precio: {{ adaData.ask }}</p>
@@ -60,13 +69,18 @@
                   <p>Venta: {{ adaData.bid }}</p>
                   <p>Venta con comisiones: {{ adaData.totalBid }}</p>
                   <p>Tiempo actualizacion: {{ adaData.time }}</p>
-                  <button @click="comprar(detalles, adaData)">Comprar</button>
+                  <button @click="comprar(detalles, adaData)" class="btnCompra">
+                    Comprar
+                  </button>
                 </div>
               </div>
               <div class="contenedor-Terciario">
-                <div class="contenedor-verDetalles">
+                <div
+                  class="contenedor-verDetalles"
+                  @click="mostrarDetalles('avax')"
+                >
                   <h2>AVAX</h2>
-                  <button @click="mostrarDetalles('avax')">Ver detalles</button>
+                  <h3>Ver detalles</h3>
                 </div>
                 <div v-if="detalles === 'avax'" class="detalles">
                   <p>Precio: {{ avaxData.ask }}</p>
@@ -74,7 +88,12 @@
                   <p>Venta: {{ avaxData.bid }}</p>
                   <p>Venta con comisiones: {{ avaxData.totalBid }}</p>
                   <p>Tiempo actualizacion: {{ avaxData.time }}</p>
-                  <button @click="comprar(detalles, avaxData)">Comprar</button>
+                  <button
+                    @click="comprar(detalles, avaxData)"
+                    class="btnCompra"
+                  >
+                    Comprar
+                  </button>
                 </div>
               </div>
             </div>
@@ -85,11 +104,12 @@
                   :key="moneda"
                   class="contenedor-Terciario"
                 >
-                  <div class="contenedor-verDetalles">
+                  <div
+                    class="contenedor-verDetalles"
+                    @click="mostrarDetalles(moneda, data)"
+                  >
                     <h2>{{ moneda }}</h2>
-                    <button @click="mostrarDetalles(moneda, data)">
-                      Ver detalles
-                    </button>
+                    <h3>Ver detalles</h3>
                   </div>
                   <div v-if="detalles === moneda" class="detalles">
                     <p>Precio: {{ data.ask }}</p>
@@ -97,7 +117,9 @@
                     <p>Venta: {{ data.bid }}</p>
                     <p>Venta con comisiones: {{ data.totalBid }}</p>
                     <p>Tiempo actualizacion: {{ data.time }}</p>
-                    <button @click="comprar(moneda, data)">Comprar</button>
+                    <button @click="comprar(moneda, data)" class="btnCompra">
+                      Comprar
+                    </button>
                   </div>
                 </div>
               </div>
@@ -142,51 +164,8 @@ export default {
       this.$store.dispatch("btnCompra", { moneda, data });
       this.$router.push({ name: "Compra", params: { moneda: moneda } });
     },
-    /*    verDetalles(moneda, data) {
-      this.$store.commit("guardarDetalles", { moneda, data });
-      this.$router.push({ name: "Detalles", params: { moneda: moneda } });
-    }, */
   },
 };
-/*import eventService from "@/services/EventService.js";
-export default {
-  data() {
-    return {
-      nupenData: null,
-      adaData: null,
-      avaxData: null,
-      listaArgentBTC: ["BTC", "DAI", "ETH", "USDT"],
-      argentBTCData: {
-        BTC: null,
-        DAI: null,
-        ETH: null,
-        USDT: null,
-      },
-      carga: true,
-      error: false,
-    };
-  },
-  async created() {
-    try {
-      const responseNupen = await eventService.argenNupen();
-      this.nupenData = responseNupen.data;
-      this.adaData = (await eventService.argenAda()).data;
-      const responseAvax = await eventService.argenAvax();
-      this.avaxData = responseAvax.data;
-      for (const moneda of this.listaArgentBTC) {
-        const responseBTC = await eventService.argenBTC(moneda);
-        this.argentBTCData[moneda] = responseBTC.data;
-        console.log(this.argentBTCData[moneda]);
-      }
-      console.log(this.adaData);
-      console.log(responseAvax);
-      this.carga = false;
-    } catch (error) {
-      console.log(error);
-      this.error = true;
-    }
-  },
-};*/
 </script>
 <style>
 #fondoLista {
@@ -205,7 +184,7 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  background: linear-gradient(135deg, #000008, #531466);
+  /*background: linear-gradient(135deg, #000008, #531466);*/
 }
 .contenedor-Principal {
   position: relative;
@@ -219,16 +198,20 @@ export default {
   display: grid;
   grid-template-rows: 1fr 1fr;
   position: absolute;
-  width: 90%;
+  width: 80%;
   height: 50%;
   border-style: solid;
   border-radius: 10px;
-  margin-left: 5%;
+  margin-left: 10%;
+  margin-right: 10%;
   bottom: 5%;
   background: rgba(0, 0, 0, 0.6);
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
   color: white;
   padding: 10px;
+}
+.contenedor-Secundario::-webkit-scrollbar {
+  background: transparent;
 }
 .contenedor-verDetalles {
   display: grid;
@@ -236,15 +219,20 @@ export default {
   gap: 20px;
   width: 100%;
   position: relative;
-}
-.contenedor-verDetalles button {
-  grid-column: 2;
-  width: 200px;
-  height: 50%;
-  justify-self: center;
-  align-self: center;
   cursor: pointer;
-  border-radius: 5px;
+}
+.contenedor-verDetalles::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 52%;
+  transform: translateX(-50%);
+  width: 70%;
+  border-top: 2px solid #ccc;
+}
+.contenedor-verDetalles h3 {
+  grid-column: 2;
+  justify-self: center;
 }
 .contenedor-verDetalles h2 {
   grid-column: 1;
@@ -298,10 +286,10 @@ export default {
   border: 2px groove;
   border-radius: 10px;
   transition: opacity 0.3s ease;
-  border-color: rgb(195, 37, 209);
+  border-color: rgb(255, 255, 255);
 }
 .botonExchange:hover::after {
-  opacity: 0;
+  opacity: 0.1;
 }
 .titulo {
   position: fixed;
@@ -313,6 +301,40 @@ export default {
   height: 10%;
   color: rgb(255, 255, 255);
   text-shadow: 0 5px 10px black;
-  -webkit-text-stroke: 1px rgb(110, 16, 95);
+  -webkit-text-stroke: 1.5px rgb(110, 16, 95);
+}
+.btnVerDetalles {
+  border-style: hidden;
+  border-radius: 10px;
+  margin: 5px;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  color: white;
+}
+.btnVerDetalles::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 2px groove;
+  border-radius: 10px;
+  transition: opacity 0.3s ease;
+  border-color: rgb(255, 255, 255);
+}
+.btnVerDetalles:hover::after {
+  opacity: 0.2;
+}
+.btnCompra {
+  border-radius: 10px;
+  width: 20%;
+  min-width: 90px;
+  font-size: 18px;
+  cursor: pointer;
 }
 </style>

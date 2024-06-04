@@ -21,12 +21,11 @@ export default createStore({
     carga: true,
     error: false,
     datosCompra: JSON.parse(localStorage.getItem("datosCompra") || "{}"),
-    //formatoFecha: null,
   },
   getters: {
     usuarioAutenticado(state) {
       const usuarioCerrado = state.usuarioAutenticado;
-      console.log("usuario cerrado", usuarioCerrado);
+      //console.log("usuario cerrado", usuarioCerrado);
       return usuarioCerrado;
     },
     datosCompra(state) {
@@ -77,13 +76,6 @@ export default createStore({
       state.datosCompra[moneda] = data;
       localStorage.setItem("datosCompra", JSON.stringify(state.datosCompra));
     },
-    /*formatoDeFecha(state, formatoFecha) {
-      state.formatoFecha = formatoFecha;
-    },*/
-    /*guardarDetalles(state, { moneda, data }) {
-      state.detalle = { moneda, data };
-      sessionStorage.setItem("detalle", JSON.stringify({ moneda, data }));
-    },*/
   },
   actions: {
     inicio({ commit }, idUsuario) {
@@ -97,7 +89,6 @@ export default createStore({
       localStorage.setItem("usuarioAutenticado", false);
     },
     btnCompra({ commit }, { moneda, data }) {
-      //console.log("Guardando datos de compra:", moneda, data);
       commit("guardarDatosCompra", { moneda, data });
     },
     async darFomatoFecha(_, tiempo) {
@@ -105,25 +96,8 @@ export default createStore({
         .unix(tiempo)
         .local()
         .format("YYYY-MM-DDTHH:mm:ss.SSSZ");
-      console.log("Fecha compra (ISO 8601 con horario local):", nuevaFecha);
       return nuevaFecha;
     },
-    /*async darFomatoFecha(_, tiempo) {
-      const nuevaFecha = new Date(tiempo * 1000);
-      const dia = nuevaFecha.getDate().toString().padStart(2, "0");
-      const mes = (nuevaFecha.getMonth() + 1).toString().padStart(2, "0");
-      const año = nuevaFecha.getFullYear();
-      const hora = nuevaFecha.getHours().toString().padStart(2, "0");
-      const minutos = nuevaFecha.getMinutes().toString().padStart(2, "0");
-      const formatoFecha = `${dia}-${mes}-${año} ${hora}:${minutos}`.toString();
-      console.log("fecha compra: ", formatoFecha);
-      return formatoFecha;
-    },*/
-    /*dandoFormatoFecha({ commit }, fechaVista) {
-      const formatoOriginal = fechaVista;
-      const fecha = new Date(formatoOriginal * 1000);
-      commit("formatoDeFecha", fecha);
-    },*/
     consultaApi({ commit, dispatch }) {
       const actApi = async () => {
         try {
@@ -145,19 +119,13 @@ export default createStore({
           const formatoFechaAvax = await dispatch("darFomatoFecha", avaxTiempo);
           responseAvax.time = formatoFechaAvax;
           commit("actAvaxData", responseAvax);
-          console.log("ArgenAda", adaData);
-          console.log("Nuars", responseNuars);
-          console.log("Avax", responseAvax);
           for (const moneda of this.state.listaArgentBTC) {
             const responseBTC = (await eventService.argenBTC(moneda)).data;
             const btcTiempo = responseBTC.time;
             const formatoFechaBTC = await dispatch("darFomatoFecha", btcTiempo);
             responseBTC.time = formatoFechaBTC;
             commit("actArgentBTCData", { moneda, data: responseBTC });
-            console.log("responseBTCs", responseBTC);
           }
-          console.log(adaData);
-          console.log(responseAvax);
           commit("actCarga", false);
         } catch (error) {
           console.log(error);
@@ -167,5 +135,13 @@ export default createStore({
       setInterval(actApi, 60000);
       actApi();
     },
+    /*consultaTransaccion({ commit }) {
+      try {
+
+      } catch (error) {
+        console.log(error);
+          commit("actError", true);
+      }
+    }*/
   },
 });
