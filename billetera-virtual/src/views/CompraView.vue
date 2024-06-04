@@ -77,8 +77,8 @@ export default {
           user_id: this.usuario.id,
           action: "purchase",
           crypto_code: this.monedas,
-          crypto_amount: this.cantidad,
-          money: this.cantComprada(),
+          crypto_amount: this.cantidad.toString(),
+          money: this.cantComprada().toString(),
           datetime: fecha,
         };
         console.log("data", infoCompra);
