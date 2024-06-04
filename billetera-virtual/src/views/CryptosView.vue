@@ -1,5 +1,5 @@
 <template>
-  <div id="app1">
+  <div>
     <div id="fondoImagen">
       <img src="@\components\Imagenes\FondoInicioSesion.jpg" id="fondoLista" />
       <div class="contenedor-Principal">
@@ -164,51 +164,8 @@ export default {
       this.$store.dispatch("btnCompra", { moneda, data });
       this.$router.push({ name: "Compra", params: { moneda: moneda } });
     },
-    /*    verDetalles(moneda, data) {
-      this.$store.commit("guardarDetalles", { moneda, data });
-      this.$router.push({ name: "Detalles", params: { moneda: moneda } });
-    }, */
   },
 };
-/*import eventService from "@/services/EventService.js";
-export default {
-  data() {
-    return {
-      nupenData: null,
-      adaData: null,
-      avaxData: null,
-      listaArgentBTC: ["BTC", "DAI", "ETH", "USDT"],
-      argentBTCData: {
-        BTC: null,
-        DAI: null,
-        ETH: null,
-        USDT: null,
-      },
-      carga: true,
-      error: false,
-    };
-  },
-  async created() {
-    try {
-      const responseNupen = await eventService.argenNupen();
-      this.nupenData = responseNupen.data;
-      this.adaData = (await eventService.argenAda()).data;
-      const responseAvax = await eventService.argenAvax();
-      this.avaxData = responseAvax.data;
-      for (const moneda of this.listaArgentBTC) {
-        const responseBTC = await eventService.argenBTC(moneda);
-        this.argentBTCData[moneda] = responseBTC.data;
-        console.log(this.argentBTCData[moneda]);
-      }
-      console.log(this.adaData);
-      console.log(responseAvax);
-      this.carga = false;
-    } catch (error) {
-      console.log(error);
-      this.error = true;
-    }
-  },
-};*/
 </script>
 <style>
 #fondoLista {
@@ -344,7 +301,7 @@ export default {
   height: 10%;
   color: rgb(255, 255, 255);
   text-shadow: 0 5px 10px black;
-  -webkit-text-stroke: 1px rgb(110, 16, 95);
+  -webkit-text-stroke: 1.5px rgb(110, 16, 95);
 }
 .btnVerDetalles {
   border-style: hidden;

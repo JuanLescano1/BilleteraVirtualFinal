@@ -24,4 +24,7 @@ export default {
     console.log("Datos enviados a la API:", infoCompra);
     return apiClient.post("/transactions", infoCompra);
   },
+  venta() {
+    return apiClient.get("/transactions");
+  },
 };

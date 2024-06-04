@@ -27,15 +27,14 @@ const routes = [
     component: () => import("../views/CryptosView.vue"),
   },
   {
-    path: "/detalles/:moneda",
-    name: "Detalles",
-    component: () => import("../views/DetallesView.vue"),
-    props: true,
-  },
-  {
     path: "/compra/:moneda",
     name: "Compra",
     component: () => import("../views/CompraView.vue"),
+  },
+  {
+    path: "/venta",
+    name: "venta",
+    component: () => import("../views/VentaView.vue"),
   },
 ];
 

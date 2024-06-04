@@ -25,7 +25,7 @@ export default createStore({
   getters: {
     usuarioAutenticado(state) {
       const usuarioCerrado = state.usuarioAutenticado;
-      console.log("usuario cerrado", usuarioCerrado);
+      //console.log("usuario cerrado", usuarioCerrado);
       return usuarioCerrado;
     },
     datosCompra(state) {
@@ -96,7 +96,6 @@ export default createStore({
         .unix(tiempo)
         .local()
         .format("YYYY-MM-DDTHH:mm:ss.SSSZ");
-      console.log("Fecha compra (ISO 8601 con horario local):", nuevaFecha);
       return nuevaFecha;
     },
     consultaApi({ commit, dispatch }) {
@@ -120,19 +119,13 @@ export default createStore({
           const formatoFechaAvax = await dispatch("darFomatoFecha", avaxTiempo);
           responseAvax.time = formatoFechaAvax;
           commit("actAvaxData", responseAvax);
-          console.log("ArgenAda", adaData);
-          console.log("Nuars", responseNuars);
-          console.log("Avax", responseAvax);
           for (const moneda of this.state.listaArgentBTC) {
             const responseBTC = (await eventService.argenBTC(moneda)).data;
             const btcTiempo = responseBTC.time;
             const formatoFechaBTC = await dispatch("darFomatoFecha", btcTiempo);
             responseBTC.time = formatoFechaBTC;
             commit("actArgentBTCData", { moneda, data: responseBTC });
-            console.log("responseBTCs", responseBTC);
           }
-          console.log(adaData);
-          console.log(responseAvax);
           commit("actCarga", false);
         } catch (error) {
           console.log(error);
@@ -142,5 +135,13 @@ export default createStore({
       setInterval(actApi, 60000);
       actApi();
     },
+    /*consultaTransaccion({ commit }) {
+      try {
+
+      } catch (error) {
+        console.log(error);
+          commit("actError", true);
+      }
+    }*/
   },
 });

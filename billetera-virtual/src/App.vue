@@ -6,7 +6,7 @@
       <router-link v-if="usuarioAutenticado" to="/crypto">
         Monedas|
       </router-link>
-      <router-link v-if="usuarioAutenticado" to="/">Venta|</router-link>
+      <router-link v-if="usuarioAutenticado" to="/venta">Venta|</router-link>
       <router-link v-if="usuarioAutenticado" to="/">Historial|</router-link>
       <router-link v-if="usuarioAutenticado" to="/usuario">
         Usuario
