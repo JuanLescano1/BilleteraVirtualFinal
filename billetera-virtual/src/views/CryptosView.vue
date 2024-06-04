@@ -241,16 +241,20 @@ export default {
   display: grid;
   grid-template-rows: 1fr 1fr;
   position: absolute;
-  width: 90%;
+  width: 80%;
   height: 50%;
   border-style: solid;
   border-radius: 10px;
-  margin-left: 5%;
+  margin-left: 10%;
+  margin-right: 10%;
   bottom: 5%;
   background: rgba(0, 0, 0, 0.6);
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
   color: white;
   padding: 10px;
+}
+.contenedor-Secundario::-webkit-scrollbar {
+  background: transparent;
 }
 .contenedor-verDetalles {
   display: grid;
