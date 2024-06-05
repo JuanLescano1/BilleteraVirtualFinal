@@ -4,8 +4,8 @@ const api = axios.create({
   baseURL: "https://criptoya.com/api",
 });
 const apiClient = axios.create({
-  baseURL: "https://laboratorio3-f36a.restdb.io/rest",
-  headers: { "x-apikey": "60eb09146661365596af552f" },
+  baseURL: "https://laboratorio-afe2.restdb.io/rest/",
+  headers: { "x-apikey": "650b53356888544ec60c00bf" },
 });
 export default {
   argenNuars() {
@@ -22,7 +22,16 @@ export default {
   },
   compra(infoCompra) {
     console.log("Datos enviados a la API:", infoCompra);
-    return apiClient.post("/transactions", infoCompra);
+    return apiClient
+      .post("/transactions", infoCompra)
+      .then((response) => {
+        console.log("Respuesta de la API: ", response.data);
+        return response;
+      })
+      .catch((error) => {
+        console.log("Error de la API: ", error);
+        throw error;
+      });
   },
   venta() {
     return apiClient.get("/transactions");
