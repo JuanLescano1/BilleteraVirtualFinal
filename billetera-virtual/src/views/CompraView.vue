@@ -25,7 +25,7 @@
 import { mapGetters, mapActions } from "vuex";
 import { useStore } from "vuex";
 import { computed } from "vue";
-import eventService from "@/services/EventService";
+import eventService from "@/services/EventService.js";
 export default {
   setup() {
     const store = useStore();
@@ -74,12 +74,18 @@ export default {
         console.log("Fecha comprada dsa", this.datosCompra[this.monedas].time);
         const fecha = this.datosCompra[this.monedas].time;
         const infoCompra = {
-          user_id: this.usuario.id,
-          action: "purchase",
           crypto_code: this.monedas,
           crypto_amount: this.cantidad,
           money: this.cantComprada(),
+          user_id: this.usuario.id,
+          action: "purchase",
           datetime: fecha,
+          /*crypto_code: "nuars",
+          crypto_amount: "1",
+          money: "1",
+          user_id: "JuanCruz",
+          action: "purchase",
+          datetime: "2023-06-21T23:17:35.767Z",*/
         };
         console.log("data", infoCompra);
         console.log("dsadad", fecha);
@@ -87,7 +93,6 @@ export default {
           .compra(infoCompra)
           .then((response) => {
             console.log("Respuesta de la api: ", response.data);
-            console.log("Fecha respuesta api", response.data.datetime);
           })
           .catch((error) => {
             console.error("Error de la api: ", error);

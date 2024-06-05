@@ -1,8 +1,10 @@
 <template>
   <div>
-    <div v-for="compra in criptosCompradas" :key="compra.id">
-      <div>
-        {{ compra }}
+    <div v-for="compra in criptosCompradas" :key="compra._id">
+      <div v-if="compra.user_id === usuario.id">
+        {{ compra.money }}/{{ compra.crypto_amount }}/{{ compra.user_id }}/{{
+          compra.crypto_code
+        }}
       </div>
     </div>
   </div>
