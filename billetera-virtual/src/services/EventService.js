@@ -33,7 +33,10 @@ export default {
         throw error;
       });
   },
-  venta() {
+  venta(infoVenta) {
+    return apiClient.post("/transactions", infoVenta);
+  },
+  transacciones() {
     return apiClient.get("/transactions");
   },
 };
