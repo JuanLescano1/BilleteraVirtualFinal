@@ -95,7 +95,7 @@ export default createStore({
       const nuevaFecha = moment
         .unix(tiempo)
         .local()
-        .format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+        .format("YYYY-MM-DDTHH:mm:ss.SSS-03:00");
       return nuevaFecha;
     },
     consultaApi({ commit, dispatch }) {

@@ -73,6 +73,7 @@ export default {
         console.log(this.cantComprada());
         console.log("Fecha comprada dsa", this.datosCompra[this.monedas].time);
         const fecha = this.datosCompra[this.monedas].time;
+        console.log("fecha de compra: ", fecha);
         const infoCompra = {
           crypto_code: this.monedas,
           crypto_amount: this.cantidad,
@@ -97,6 +98,7 @@ export default {
           .catch((error) => {
             console.error("Error de la api: ", error);
           });
+        this.$router.push("/crypto");
         //console.log("data", infoCompra);
       } else {
         alert("Ingrese un dato valido.");
@@ -109,7 +111,7 @@ export default {
       return this.cantidad !== null && parseFloat(this.cantidad) >= 0;
     },
     cantComprada() {
-      const precioUnidad = this.datosCompra[this.monedas].ask;
+      const precioUnidad = this.datosCompra[this.monedas].totalAsk;
       const precioAPagar = precioUnidad * this.cantidad;
       return precioAPagar;
     },
