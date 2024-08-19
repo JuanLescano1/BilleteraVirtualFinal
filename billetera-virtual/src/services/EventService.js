@@ -34,6 +34,7 @@ export default {
       });
   },
   venta(infoVenta) {
+    console.log("Datos enviados a la API de venta:", infoVenta);
     return apiClient.post("/transactions", infoVenta);
   },
   transacciones() {
