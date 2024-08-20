@@ -33,7 +33,7 @@
           </div>
           <div class="contenedor-Secundario">
             <div v-if="buenBit">
-              <div class="contenedor-Terciario">
+              <div>
                 <div
                   class="contenedor-verDetalles"
                   @click="mostrarDetalles('nuars')"
@@ -55,7 +55,7 @@
                   </button>
                 </div>
               </div>
-              <div class="contenedor-Terciario">
+              <div>
                 <div
                   class="contenedor-verDetalles"
                   @click="mostrarDetalles('ada')"
@@ -74,7 +74,7 @@
                   </button>
                 </div>
               </div>
-              <div class="contenedor-Terciario">
+              <div>
                 <div
                   class="contenedor-verDetalles"
                   @click="mostrarDetalles('avax')"
@@ -99,11 +99,7 @@
             </div>
             <div v-if="argenBTC">
               <div>
-                <div
-                  v-for="(data, moneda) in argentBTCData"
-                  :key="moneda"
-                  class="contenedor-Terciario"
-                >
+                <div v-for="(data, moneda) in argentBTCData" :key="moneda">
                   <div
                     class="contenedor-verDetalles"
                     @click="mostrarDetalles(moneda, data)"

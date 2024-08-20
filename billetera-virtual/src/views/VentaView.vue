@@ -1,23 +1,32 @@
 <template>
-  <div>
-    <h1>Usuario iniciado: {{ usuario.id }}</h1>
-    <div v-for="(compraAgrupada, index) in comprasAgrupadas" :key="index">
-      <p>Precio de compra: {{ compraAgrupada.money }}</p>
-      <p>Cantidad comprada: {{ compraAgrupada.totalAmount }}</p>
-      <p>Usuario: {{ compraAgrupada.user_id }}</p>
-      <p>Cantidad actual: {{ cantidadActual(compraAgrupada.crypto_code) }}</p>
-      <h1>Moneda: {{ compraAgrupada.crypto_code }}</h1>
-      <h1 v-if="datosCompra[compraAgrupada.crypto_code]">
-        Precio de venta sin comisiones:
-        {{ datosCompra[compraAgrupada.crypto_code].bid }}
-      </h1>
-      <input
-        v-model="cantidad[compraAgrupada.crypto_code]"
-        type="number"
-        placeholder="Cantidad a vender"
-        step="0.0001"
-      />
-      <button @click="ConfirmarVenta(compraAgrupada)">Vender</button>
+  <div id="principal">
+    <div id="secundario">
+      <h1>Usuario iniciado: {{ usuario.id }}</h1>
+      <div
+        v-for="(compraAgrupada, index) in comprasAgrupadas"
+        :key="index"
+        id="datosCompra"
+      >
+        <h2>Moneda: {{ compraAgrupada.crypto_code }}</h2>
+        <p>Precio de compra: {{ compraAgrupada.money }}</p>
+        <p>Cantidad comprada: {{ compraAgrupada.totalAmount }}</p>
+        <p>Usuario: {{ compraAgrupada.user_id }}</p>
+        <p>
+          Cantidad actual:
+          {{ cantidadActual(compraAgrupada.crypto_code).toFixed(4) }}
+        </p>
+        <p v-if="datosCompra[compraAgrupada.crypto_code]">
+          Precio de venta sin comisiones:
+          {{ datosCompra[compraAgrupada.crypto_code].bid }}
+        </p>
+        <input
+          v-model="cantidad[compraAgrupada.crypto_code]"
+          type="number"
+          placeholder="Cantidad a vender"
+          step="0.001"
+        />
+        <button @click="ConfirmarVenta(compraAgrupada)">Vender</button>
+      </div>
     </div>
   </div>
 </template>
@@ -110,15 +119,13 @@ export default {
         (venta) => venta.crypto_code === cryptoCode
       );
       const ventasTotales = ventasAgrupada ? ventasAgrupada.totalAmount : 0;
-      return compraAgrupada.totalAmount - ventasTotales;
+      const cantidadActual = compraAgrupada.totalAmount - ventasTotales;
+      return cantidadActual;
     },
     async ConfirmarVenta(compraAgrupada) {
       const cantidadVender = this.cantidad[compraAgrupada.crypto_code];
-      const ventasAgrupada = await this.ventasAgrupadas.find(
-        (venta) => venta.crypto_code === compraAgrupada.crypto_code
-      );
-      const ventasTotales = ventasAgrupada ? ventasAgrupada.totalAmount : 0;
-      const cantActual = compraAgrupada.totalAmount - ventasTotales;
+      const cantActual = this.cantidadActual(compraAgrupada.crypto_code);
+      console.log(cantActual);
       if (cantidadVender <= 0) {
         alert("La cantidad a vender debe ser mayor que 0.");
         return;
@@ -157,4 +164,29 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+#principal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: linear-gradient(135deg, #531466, #000008);
+}
+#secundario {
+  position: relative;
+  top: 5;
+  margin-top: 10%;
+}
+#datosCompra {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 0.5fr 0.5fr;
+  gap: 20px;
+  width: 90%;
+  position: relative;
+  cursor: pointer;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+</style>
