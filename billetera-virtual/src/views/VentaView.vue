@@ -5,18 +5,19 @@
       <p>Precio de compra: {{ compraAgrupada.money }}</p>
       <p>Cantidad comprada: {{ compraAgrupada.totalAmount }}</p>
       <p>Usuario: {{ compraAgrupada.user_id }}</p>
+      <p>Cantidad actual: {{ cantidadActual(compraAgrupada.crypto_code) }}</p>
       <h1>Moneda: {{ compraAgrupada.crypto_code }}</h1>
       <h1 v-if="datosCompra[compraAgrupada.crypto_code]">
         Precio de venta sin comisiones:
         {{ datosCompra[compraAgrupada.crypto_code].bid }}
       </h1>
       <input
-        v-model="cantidad"
+        v-model="cantidad[compraAgrupada.crypto_code]"
         type="number"
         placeholder="Cantidad a vender"
         step="0.0001"
       />
-      <button @click="ConfirmarVenta(compraAgrupada)">Comprar</button>
+      <button @click="ConfirmarVenta(compraAgrupada)">Vender</button>
     </div>
   </div>
 </template>
@@ -28,7 +29,7 @@ export default {
   data() {
     return {
       criptosCompradas: [],
-      cantidad: null,
+      cantidad: {},
       criptosVendidas: [],
     };
   },
@@ -47,11 +48,15 @@ export default {
       this.criptosCompradas.forEach((compra) => {
         if (!agrupadas[compra.crypto_code]) {
           agrupadas[compra.crypto_code] = {
+            user_id: compra.user_id,
             crypto_code: compra.crypto_code,
+            money: compra.money,
             totalAmount: 0,
+            ids: [],
           };
         }
         agrupadas[compra.crypto_code].totalAmount += compra.crypto_amount;
+        agrupadas[compra.crypto_code].ids.push(compra._id);
       });
       return Object.values(agrupadas);
     },
@@ -94,13 +99,30 @@ export default {
       await this.consultaApi();
       console.log("Datos actualizados:", this.datoCompra);
     },
-    /*async ConfirmarVenta(compraAgrupada) {
-      const cantidadVender = this.cantidad;
+    cantidadActual(cryptoCode) {
+      const compraAgrupada = this.comprasAgrupadas.find(
+        (compra) => compra.crypto_code === cryptoCode
+      );
+      if (!compraAgrupada) {
+        return 0;
+      }
       const ventasAgrupada = this.ventasAgrupadas.find(
+        (venta) => venta.crypto_code === cryptoCode
+      );
+      const ventasTotales = ventasAgrupada ? ventasAgrupada.totalAmount : 0;
+      return compraAgrupada.totalAmount - ventasTotales;
+    },
+    async ConfirmarVenta(compraAgrupada) {
+      const cantidadVender = this.cantidad[compraAgrupada.crypto_code];
+      const ventasAgrupada = await this.ventasAgrupadas.find(
         (venta) => venta.crypto_code === compraAgrupada.crypto_code
       );
-      const cantActual =
-        compraAgrupada.totalAmount - ventasAgrupada.totalAmount;
+      const ventasTotales = ventasAgrupada ? ventasAgrupada.totalAmount : 0;
+      const cantActual = compraAgrupada.totalAmount - ventasTotales;
+      if (cantidadVender <= 0) {
+        alert("La cantidad a vender debe ser mayor que 0.");
+        return;
+      }
       if (cantActual < cantidadVender) {
         alert("No puedes vender una cantidad mayor a la que posees.");
         return;
@@ -122,10 +144,12 @@ export default {
           alert("Has vendido todas las monedas.");
           compraAgrupada.totalAmount = 0;
         }
+        await this.mostrarCompras();
+        await this.consultarApi();
       } catch (error) {
         console.error("Error en la venta: ", error);
       }
-    },*/
+    },
   },
   mounted() {
     this.mostrarCompras();
