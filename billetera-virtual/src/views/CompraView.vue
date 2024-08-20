@@ -76,7 +76,7 @@ export default {
         console.log("fecha de compra: ", fecha);
         const infoCompra = {
           crypto_code: this.monedas,
-          crypto_amount: this.cantidad,
+          crypto_amount: this.cantidad.toFixed(4),
           money: this.cantComprada(),
           user_id: this.usuario.id,
           action: "purchase",

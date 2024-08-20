@@ -13,7 +13,7 @@
         <p>Usuario: {{ compraAgrupada.user_id }}</p>
         <p>
           Cantidad actual:
-          {{ cantidadActual(compraAgrupada.crypto_code).toFixed(4) }}
+          {{ cantidadActual(compraAgrupada.crypto_code) }}
         </p>
         <p v-if="datosCompra[compraAgrupada.crypto_code]">
           Precio de venta sin comisiones:
@@ -119,8 +119,7 @@ export default {
         (venta) => venta.crypto_code === cryptoCode
       );
       const ventasTotales = ventasAgrupada ? ventasAgrupada.totalAmount : 0;
-      const cantidadActual = compraAgrupada.totalAmount - ventasTotales;
-      return cantidadActual;
+      return parseFloat(compraAgrupada.totalAmount - ventasTotales);
     },
     async ConfirmarVenta(compraAgrupada) {
       const cantidadVender = this.cantidad[compraAgrupada.crypto_code];
