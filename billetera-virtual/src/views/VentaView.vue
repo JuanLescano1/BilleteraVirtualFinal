@@ -10,6 +10,13 @@
         Precio de venta sin comisiones:
         {{ datosCompra[compraAgrupada.crypto_code].bid }}
       </h1>
+      <input
+        v-model="cantidad"
+        type="number"
+        placeholder="Cantidad a vender"
+        step="0.0001"
+      />
+      <button @click="ConfirmarVenta(compraAgrupada)">Comprar</button>
     </div>
   </div>
 </template>
@@ -21,6 +28,8 @@ export default {
   data() {
     return {
       criptosCompradas: [],
+      cantidad: null,
+      criptosVendidas: [],
     };
   },
   setup() {
@@ -36,24 +45,32 @@ export default {
     comprasAgrupadas() {
       const agrupadas = {};
       this.criptosCompradas.forEach((compra) => {
-        if (
-          compra.user_id === this.usuario.id &&
-          compra.action === "purchase"
-        ) {
-          if (!agrupadas[compra.crypto_code]) {
-            agrupadas[compra.crypto_code] = {
-              user_id: compra.user_id,
-              crypto_code: compra.crypto_code,
-              money: compra.money,
-              totalAmount: 0,
-              ids: [],
-            };
-          }
-          agrupadas[compra.crypto_code].totalAmount += compra.crypto_amount;
-          agrupadas[compra.crypto_code].ids.push(compra._id);
+        if (!agrupadas[compra.crypto_code]) {
+          agrupadas[compra.crypto_code] = {
+            crypto_code: compra.crypto_code,
+            totalAmount: 0,
+          };
         }
+        agrupadas[compra.crypto_code].totalAmount += compra.crypto_amount;
       });
       return Object.values(agrupadas);
+    },
+    ventasAgrupadas() {
+      const vAgrupadas = {};
+      this.criptosVendidas.forEach((venta) => {
+        if (!vAgrupadas[venta.crypto_code]) {
+          vAgrupadas[venta.crypto_code] = {
+            user_id: venta.user_id,
+            crypto_code: venta.crypto_code,
+            money: venta.money,
+            totalAmount: 0,
+            ids: [],
+          };
+        }
+        vAgrupadas[venta.crypto_code].totalAmount += venta.crypto_amount;
+        vAgrupadas[venta.crypto_code].ids.push(venta._id);
+      });
+      return Object.values(vAgrupadas);
     },
   },
   methods: {
@@ -61,7 +78,14 @@ export default {
     async mostrarCompras() {
       try {
         const datos = await eventService.transacciones();
-        this.criptosCompradas = datos.data;
+        this.criptosCompradas = datos.data.filter(
+          (compra) =>
+            compra.user_id === this.usuario.id && compra.action === "purchase"
+        );
+        this.criptosVendidas = datos.data.filter(
+          (compra) =>
+            compra.user_id === this.usuario.id && compra.action === "sale"
+        );
       } catch (error) {
         console.error("Error al obtener los datos: ", error);
       }
@@ -70,6 +94,38 @@ export default {
       await this.consultaApi();
       console.log("Datos actualizados:", this.datoCompra);
     },
+    /*async ConfirmarVenta(compraAgrupada) {
+      const cantidadVender = this.cantidad;
+      const ventasAgrupada = this.ventasAgrupadas.find(
+        (venta) => venta.crypto_code === compraAgrupada.crypto_code
+      );
+      const cantActual =
+        compraAgrupada.totalAmount - ventasAgrupada.totalAmount;
+      if (cantActual < cantidadVender) {
+        alert("No puedes vender una cantidad mayor a la que posees.");
+        return;
+      }
+      const infoVenta = {
+        crypto_code: compraAgrupada.crypto_code,
+        crypto_amount: cantidadVender,
+        money:
+          cantidadVender * this.datosCompra[compraAgrupada.crypto_code].bid,
+        user_id: this.usuario.id,
+        action: "sale",
+        datetime: this.datosCompra[compraAgrupada.crypto_code].time,
+      };
+      try {
+        const response = await eventService.venta(infoVenta);
+        console.log("Venta realizada ", response);
+        compraAgrupada.totalAmount -= cantidadVender;
+        if (compraAgrupada.totalAmount <= 0) {
+          alert("Has vendido todas las monedas.");
+          compraAgrupada.totalAmount = 0;
+        }
+      } catch (error) {
+        console.error("Error en la venta: ", error);
+      }
+    },*/
   },
   mounted() {
     this.mostrarCompras();
