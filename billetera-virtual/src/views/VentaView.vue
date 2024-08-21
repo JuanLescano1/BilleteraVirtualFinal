@@ -13,7 +13,7 @@
         <p>Usuario: {{ compraAgrupada.user_id }}</p>
         <p>
           Cantidad actual:
-          {{ cantidadActual(compraAgrupada.crypto_code) }}
+          {{ cantidadActual(compraAgrupada.crypto_code).toFixed(8) }}
         </p>
         <p v-if="datosCompra[compraAgrupada.crypto_code]">
           Precio de venta sin comisiones:
