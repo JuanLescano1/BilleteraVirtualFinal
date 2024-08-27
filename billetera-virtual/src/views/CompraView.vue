@@ -13,7 +13,7 @@
           v-model="cantidad"
           type="number"
           placeholder="Cantidad a comprar"
-          step="0.0001"
+          step="0.000001"
         />
         <button @click="Confirmar()">Comprar</button>
         <button @click="Cancelar()">Cancelar</button>
@@ -69,14 +69,16 @@ export default {
       console.log("Datos actualizados:", this.datosCompra);
     },
     async Confirmar() {
+      console.log("Cantidad a comprar:", this.cantidad);
       if (this.validarCant()) {
         console.log(this.cantComprada());
         console.log("Fecha comprada dsa", this.datosCompra[this.monedas].time);
         const fecha = this.datosCompra[this.monedas].time;
         console.log("fecha de compra: ", fecha);
+        console.log("precio a comprar:", this.cantComprada());
         const infoCompra = {
           crypto_code: this.monedas,
-          crypto_amount: this.cantidad.toFixed(4),
+          crypto_amount: parseFloat(this.cantidad),
           money: this.cantComprada(),
           user_id: this.usuario.id,
           action: "purchase",
@@ -88,17 +90,22 @@ export default {
           action: "purchase",
           datetime: "2023-06-21T23:17:35.767Z",*/
         };
+        console.log("Cantidad a comprar:", this.cantidad);
+        console.log("precio a comprar:", this.cantComprada());
         console.log("data", infoCompra);
         console.log("dsadad", fecha);
+        console.log("Tipo de crypto_amount:", typeof infoCompra.crypto_amount);
         eventService
           .compra(infoCompra)
           .then((response) => {
             console.log("Respuesta de la api: ", response.data);
+            console.log("Cantidad a comprar:", this.cantidad);
           })
           .catch((error) => {
             console.error("Error de la api: ", error);
+            console.log("Cantidad a comprar:", this.cantidad);
+            console.log("precio a comprar:", this.cantComprada());
           });
-        this.$router.push("/crypto");
         //console.log("data", infoCompra);
       } else {
         alert("Ingrese un dato valido.");
@@ -108,12 +115,12 @@ export default {
       this.$router.push("/crypto");
     },
     validarCant() {
-      return this.cantidad !== null && parseFloat(this.cantidad) >= 0;
+      return this.cantidad !== null && this.cantidad > 0;
     },
     cantComprada() {
-      const precioUnidad = this.datosCompra[this.monedas].totalAsk;
+      const precioUnidad = this.datosCompra[this.monedas].totalAsk.toFixed(2);
       const precioAPagar = precioUnidad * this.cantidad;
-      return precioAPagar;
+      return parseFloat(precioAPagar.toFixed(2));
     },
     /*darFomatoFecha() {
       const nuevaFecha = new Date(this.datosCompra[this.monedas].time * 1000);
