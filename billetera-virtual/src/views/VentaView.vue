@@ -13,7 +13,7 @@
         <p>Usuario: {{ compraAgrupada.user_id }}</p>
         <p>
           Cantidad actual:
-          {{ cantidadActual(compraAgrupada.crypto_code).toFixed(8) }}
+          {{ cantidadActual(compraAgrupada.crypto_code).toFixed(4) }}
         </p>
         <p v-if="datosCompra[compraAgrupada.crypto_code]">
           Precio de venta sin comisiones:
@@ -23,7 +23,7 @@
           v-model="cantidad[compraAgrupada.crypto_code]"
           type="number"
           placeholder="Cantidad a vender"
-          step="0.001"
+          step="0.0001"
         />
         <button @click="ConfirmarVenta(compraAgrupada)">Vender</button>
       </div>
@@ -37,6 +37,7 @@ import { computed } from "vue";
 export default {
   data() {
     return {
+      criptosCompradas1: [],
       criptosCompradas: [],
       cantidad: {},
       criptosVendidas: [],
@@ -64,7 +65,8 @@ export default {
             ids: [],
           };
         }
-        agrupadas[compra.crypto_code].totalAmount += compra.crypto_amount;
+        agrupadas[compra.crypto_code].totalAmount +=
+          compra.crypto_amount.toFixed(3);
         agrupadas[compra.crypto_code].ids.push(compra._id);
       });
       return Object.values(agrupadas);
@@ -89,6 +91,14 @@ export default {
   },
   methods: {
     ...mapActions(["consultaApi"]),
+    async mostrarCompras1() {
+      try {
+        const datos = await eventService.transacciones();
+        this.criptosCompradas1 = datos.data;
+      } catch (error) {
+        console.error("Error al obtener los datos: ", error);
+      }
+    },
     async mostrarCompras() {
       try {
         const datos = await eventService.transacciones();
@@ -119,7 +129,7 @@ export default {
         (venta) => venta.crypto_code === cryptoCode
       );
       const ventasTotales = ventasAgrupada ? ventasAgrupada.totalAmount : 0;
-      return parseFloat(compraAgrupada.totalAmount - ventasTotales);
+      return compraAgrupada.totalAmount - ventasTotales;
     },
     async ConfirmarVenta(compraAgrupada) {
       const cantidadVender = this.cantidad[compraAgrupada.crypto_code];
@@ -135,9 +145,10 @@ export default {
       }
       const infoVenta = {
         crypto_code: compraAgrupada.crypto_code,
-        crypto_amount: cantidadVender,
+        crypto_amount: cantidadVender.toFixed(3),
         money:
-          cantidadVender * this.datosCompra[compraAgrupada.crypto_code].bid,
+          cantidadVender.toFixed(3) *
+          this.datosCompra[compraAgrupada.crypto_code].bid.toFixed(3),
         user_id: this.usuario.id,
         action: "sale",
         datetime: this.datosCompra[compraAgrupada.crypto_code].time,
@@ -160,6 +171,7 @@ export default {
   mounted() {
     this.mostrarCompras();
     this.consultarApi();
+    this.mostrarCompras1();
   },
 };
 </script>
