@@ -11,9 +11,10 @@
         <p>Tiempo: {{ datosCompra[monedas].time }}</p>
         <input
           v-model="cantidad"
+          :step="cantidadMinima"
+          :min="cantidadMinima"
           type="number"
-          placeholder="Cantidad a comprar"
-          step="0.000001"
+          :placeholder="`Cantidad minima: ${cantidadMinima}`"
         />
         <button @click="Confirmar()">Comprar</button>
         <button @click="Cancelar()">Cancelar</button>
@@ -49,6 +50,14 @@ export default {
   },
   computed: {
     ...mapGetters(["datosCompra"]),
+    cantidadMinima() {
+      if (this.datosCompra[this.monedas]) {
+        const gastoMin = 0.01;
+        const precioUnidad = this.datosCompra[this.monedas].ask;
+        return gastoMin / precioUnidad;
+      }
+      return 0;
+    },
   },
   created() {
     this.monedas = this.$route.params.moneda;
@@ -70,7 +79,7 @@ export default {
     },
     async Confirmar() {
       console.log("Cantidad a comprar:", this.cantidad);
-      if (this.validarCant()) {
+      if (this.cantidad > 0) {
         console.log(this.cantComprada());
         console.log("Fecha comprada dsa", this.datosCompra[this.monedas].time);
         const fecha = this.datosCompra[this.monedas].time;
@@ -78,7 +87,7 @@ export default {
         console.log("precio a comprar:", this.cantComprada());
         const infoCompra = {
           crypto_code: this.monedas,
-          crypto_amount: parseFloat(this.cantidad),
+          crypto_amount: this.cantidad,
           money: this.cantComprada(),
           user_id: this.usuario.id,
           action: "purchase",
@@ -108,14 +117,11 @@ export default {
           });
         //console.log("data", infoCompra);
       } else {
-        alert("Ingrese un dato valido.");
+        alert("Ingrese un dato valido o un gasto mayor a 0.01$ argentinos.");
       }
     },
     Cancelar() {
       this.$router.push("/crypto");
-    },
-    validarCant() {
-      return this.cantidad !== null && this.cantidad > 0;
     },
     cantComprada() {
       const precioUnidad = this.datosCompra[this.monedas].totalAsk.toFixed(2);
