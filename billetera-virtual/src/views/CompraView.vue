@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <h1>{{ monedas }}</h1>
-    <div v-if="datosCompra[monedas]">
+  <div id="contenedorCompra">
+    <div v-if="datosCompra[monedas]" id="ContenedorInfoCompra">
       <h1 v-if="monedas">Moneda a comprar: {{ monedas }}</h1>
       <div v-if="monedas && datosCompra[monedas]">
-        <p>Moneda: {{ datosCompra[monedas].ask }}</p>
-        <p>Datos: {{ datosCompra[monedas].totalAsk }}</p>
+        <p>Precio: {{ datosCompra[monedas].ask }}</p>
+        <p>Precio: {{ datosCompra[monedas].totalAsk }}</p>
         <p>Datos: {{ datosCompra[monedas].bid }}</p>
         <p>Datos: {{ datosCompra[monedas].totalBid }}</p>
         <p>Tiempo: {{ datosCompra[monedas].time }}</p>
@@ -141,4 +140,20 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+#contenedorCompra {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: linear-gradient(135deg, #000000, #531466);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#ContenedorInfoCompra {
+  position: relative;
+}
+</style>
