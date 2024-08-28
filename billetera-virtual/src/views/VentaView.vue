@@ -1,5 +1,6 @@
 <template>
   <div id="principal">
+    <!--Monedas de poco valor solucionar problema de cantidaada a comprar-->
     <div id="secundario">
       <h1>Usuario iniciado: {{ usuario.id }}</h1>
       <div
@@ -37,7 +38,6 @@ import { computed } from "vue";
 export default {
   data() {
     return {
-      criptosCompradas1: [],
       criptosCompradas: [],
       cantidad: {},
       criptosVendidas: [],
